@@ -1,90 +1,109 @@
 Program Pzim ;
 var
-vida,life,lifeop,tot,contvida,cont,level:integer;
-nome,verif,resp,reiniciar:string[10];
+vida:integer; // Contagem das Vidas dispon√≠veis para o usuario
+life:integer; // Qtd. de HP dispon√≠vel.
+contvida :integer; // Vari√°vel para contagem das vidas gastas √° cada Gin√°sio e Pergunta.
+cont :integer;  // Contador para Uso ou n√£o das Ajuda dos Pok√©mons.
+pok :integer; // Contador para Qtd. de Uso dos Pok√©mons.
+level :integer;  // Distribuidor de level para identificar o caso no GAME OVER .
+pont:integer; // Contador de Pontua√ß√£o.
 
+nome:string[20]; // Cadeia de Caracteres para Inser√ß√£o do Nome .
+verif:string[10]; // Cadeia de Caracteres para Verifica√ß√£o da Disponibilidade da Pergunta.
+resp:string[10];  // Cadeia de Caracteres para Inserir a Resposta.
+reiniciar:string[10]; // Cadeia de Caracteres para Reiniciar ap√≥s o GAME OVER.
+
+// Procedimento do Corpo do Jogo
 procedure JOGO;
 Begin
+// Atribui√ß√£o de Valores
 vida:=3;
 life:=100;
+pont:=0;
+// Mudan√ßa de Cores
+// Limpatela
+// Interface
   textbackground(red);
   clrscr;
   textcolor(1);
   textcolor(12);
   gotoxy(40,0);
-  writeln('          --------_¶¶¶¶¶¶¶¶¶¶¶_--------'                   );
-  writeln('          -----_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_-----'                   );
-  writeln('          ----¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶----'                   );
-  writeln('          ---¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶---'                   );
-  writeln('          --¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶--');
-  writeln('          -¶¶¶¶¶¶¶¶¶¶¶       ¶¶¶¶¶¶¶¶¶¶¶-');
-  writeln('          ¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶');
-  writeln('          ¶¶¶¶¶¶¶¶¶¶ ¶¶      ¶¶ ¶¶¶¶¶¶¶¶¶');
-  writeln('          ¶¶¶¶¶¶¶¶¶ ¶¶  ¶¶¶¶  ¶¶ ¶¶¶¶¶¶¶¶');
-  writeln('          ¶¶¶¶¶¶¶¶¶ ¶¶    ¶¶   ¶¶ ¶¶¶¶¶¶¶¶');
+  writeln('          --------_¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶_--------'                   );
+  writeln('          -----_¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶_-----'                   );
+  writeln('          ----¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶----'                   );
+  writeln('          ---¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶---'                   );
+  writeln('          --¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶--');
+  writeln('          -¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶       ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶-');
+  writeln('          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶ ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶  ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶');
+  writeln('          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶ ¬¶¬¶      ¬¶¬¶ ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶');
+  writeln('          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶ ¬¶¬¶  ¬¶¬¶¬¶¬¶  ¬¶¬¶ ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶');
+  writeln('          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶ ¬¶¬¶    ¬¶¬¶   ¬¶¬¶ ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶');
   textcolor(0);
-  writeln('          ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶');
+  writeln('          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶');
   textcolor(15);
-  write('          ¶¶        ¶¶   ¶¶   ¶¶       ¶¶');
+  write('          ¬¶¬¶        ¬¶¬¶   ¬¶¬¶   ¬¶¬¶       ¬¶¬¶');
   writeln('       S    S		S	SSSSSS' );
-  write('          ¶¶         ¶¶      ¶¶        ¶¶ ');
+  write('          ¬¶¬¶         ¬¶¬¶      ¬¶¬¶        ¬¶¬¶ ');
   writeln('      S    S		S	    S	');
-  write('          ¶¶          ¶¶¶¶¶¶¶¶         ¶¶ ');
+  write('          ¬¶¬¶          ¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶         ¬¶¬¶ ');
   writeln('	S    S		S	   S	');
-  write('          -¶¶                         ¶¶- ');
+  write('          -¬¶¬¶                         ¬¶¬¶- ');
   writeln('  	S    S		S	  S	');
-  write('          --¶¶                       ¶¶-- ');
+  write('          --¬¶¬¶                       ¬¶¬¶-- ');
   writeln('      S    S		S	 S	');
-  write('          ---¶¶                     ¶¶---   ');
+  write('          ---¬¶¬¶                     ¬¶¬¶---   ');
   writeln('	SSSSSS		S       SSSSSS');
-  write('          ----¶¶¶                 ¶¶¶---- ');
+  write('          ----¬¶¬¶¬¶                 ¬¶¬¶¬¶---- ');
   textcolor(14);
   writeln('            > NOVO JOGO');
   textcolor(15);
-  writeln('          -----Ø¶¶¶             ¶¶¶---- ');
-  write('          --------Ø¶¶¶¶¶¶¶¶¶¶¶¶¶¶----   ');
+  writeln('          -----¬Ø¬¶¬¶¬¶             ¬¶¬¶¬¶---- ');
+  write('          --------¬Ø¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶¬¶----   ');
   textcolor(14);
   writeln('PRESSIONE QUALQUER TECLA PARA INCIAR...');
   textcolor(15);
-  writeln('                               ¶¶¶¶¶  ');
-  writeln('	                         ¶¶¶¶¶');
-  writeln('                                     ¶¶');
+  writeln('                               ¬¶¬¶¬¶¬¶¬¶  ');
+  writeln('	                         ¬¶¬¶¬¶¬¶¬¶');
+  writeln('                                     ¬¶¬¶');
   readkey;
+  // Mudan√ßa de Cor
+  
   textcolor(white);
   writeln('');
   write('                                         DIGITE SEU NOME DE TREINADOR : ');
   read(nome);
+  // Entrada de Dados
   clrscr;
   // CAMPO DE REGRAS
-writeln('------------------------------------------------------------------------------------------------------------');
-writeln('	                                                 REGRAS:											');
-writeln('------------------------------------------------------------------------------------------------------------');
-writeln('												');
-writeln('	1 - Cada GIN¡SIO ter· uma MAT…RIA, com uma sÈrie de PERGUNTAS para vocÍ responder.											');
-writeln('	2 - Por n„o ter pokebolas, vocÍ sÛ pode usar UM pokÈmon por gin·sio.											');
-writeln('	3 - O seu pokÈmon ganha HP (Pontos de vida) a cada gin·sio superado, e perde a cada resposta errada.										'	);
-writeln('	4 - Se o seu HP chegar a zero, vocÍ perde UMA VIDA, e REINICIAR¡ O GIN¡SIO.										'	);
-writeln('	5 - Se vocÍ perder todas as 03 vidas, FIM DE JOGO.										'	);
-writeln('	6 - Seu objetivo final È derrotar os lÌderes de todos os gin·sios,										'	);
-writeln('	7 - Se vocÍ acertar TODAS as perguntas, vocÍ obter· o pokÈmon mais raro de todos.									'		);
-writeln('	8 - Para usar seu Pokemon, basta digitar a Letra "P" no campo de respsta.											');
-writeln('	9- Todas as Perguntas contÈm 4 alternativas. Para responde-l·s basta inserir ou numÈro da mesma (1,2,3,ou 4).											');
-writeln('	10 - Leia atentamente todos os DialÛgos, pois eles ter„o informaÁıes importantes para o seu jogo.										'	);
-writeln('	BOA SORTE!											');
-writeln('');
-// MODO PARA PASSAR PARA PROX. TELA
-writeln('                                ***PRESSIONE QUALQUER TECLA PARA CONTINUAR...***');
-readkey;
+ writeln('------------------------------------------------------------------------------------------------------------');
+ writeln('	                                                 REGRAS:											');
+ writeln('------------------------------------------------------------------------------------------------------------');
+ writeln('												');
+ writeln('	1 - Cada GIN√ÅSIO ter√° uma MAT√âRIA, com uma s√©rie de PERGUNTAS para voc√™ responder.											');
+ writeln('	2 - Por n√£o ter pokebolas, voc√™ s√≥ pode usar UM pok√©mon por gin√°sio.											');
+ writeln('	3 - O seu pok√©mon ganha HP (Pontos de vida) a cada gin√°sio superado, e perde a cada resposta errada.										'	);
+ writeln('	4 - Se o seu HP chegar a zero, voc√™ perde UMA VIDA, e REINICIAR√Å O GIN√ÅSIO.										'	);
+ writeln('	5 - Se voc√™ perder todas as 03 vidas, FIM DE JOGO.										'	);
+ writeln('	6 - Seu objetivo final √© derrotar os l√≠deres de todos os gin√°sios,										'	);
+ writeln('	7 - Se voc√™ acertar TODAS as perguntas, voc√™ obter√° o pok√©mon mais raro de todos.									'		);
+ writeln('	8 - Para usar seu Pokemon, basta digitar a Letra "P" no campo de respsta.											');
+ writeln('	9- Todas as Perguntas cont√©m 4 alternativas. Para responde-l√°s basta inserir ou num√©ro da mesma (1,2,3,ou 4).											');
+ writeln('	10 - Leia atentamente todos os Dial√≥gos, pois eles ter√£o informa√ß√µes importantes para o seu jogo.										'	);
+ writeln('	BOA SORTE!											');
+ writeln('');
+ // MODO PARA PASSAR PARA PROX. TELA
+ writeln('                                ***PRESSIONE QUALQUER TECLA PARA CONTINUAR...***');
+ readkey;
 
-   // ApresentaÁ„o da primeira parte do jogo
+   // Apresenta√ß√£o da primeira parte do jogo
    clrscr;
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
+   writeln('8                                  A HIST√ìRIA                                  8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8                                                                              8');
-   writeln('8      H· tempos atr·s, a bela ILHA de Asl‚ndia era o lar  de                  8');
-   writeln('8      v·rios pokÈmons, criaturas exÛticas com poderes extraordin·rios,        8');
+   writeln('8      H√° tempos atr√°s, a bela ILHA de Asl√¢ndia era o lar  de                  8');
+   writeln('8      v√°rios pok√©mons, criaturas ex√≥ticas com poderes extraordin√°rios,        8');
    writeln('8      que viviam em sua rica fauna e flora.                                   8');                                 
    writeln('8                                                                              8');
    writeln('8                  .    :Fv                                                    8');
@@ -115,16 +134,16 @@ readkey;
 	 readkey;
 	 
 	 clrscr;
-	 // ApresentaÁ„o da segunda parte da historia do jogo
+	 // Apresenta√ß√£o da segunda parte da historia do jogo
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8      PorÈm, a f˙ria da natureza chegou a Asl‚ndia,e apÛs uma misteriosa      8');
-   writeln('8      tempestade, a ilha afundou no oceano, onde ninguÈm poderia salv·-la.    8');
-   writeln('8      Com a ilha, foram perdidos v·rios pokÈmons,uma dessas criaturas era     8');                                 
-   writeln('8      ARCHEN, uma bela ave-rÈptil multi-colorida.                             8');
+   writeln('8      Por√©m, a f√∫ria da natureza chegou a Asl√¢ndia,e ap√≥s uma misteriosa      8');
+   writeln('8      tempestade, a ilha afundou no oceano, onde ningu√©m poderia salv√°-la.    8');
+   writeln('8      Com a ilha, foram perdidos v√°rios pok√©mons,uma dessas criaturas era     8');                                 
+   writeln('8      ARCHEN, uma bela ave-r√©ptil multi-colorida.                             8');
    writeln('8                                                                              8');
    writeln('8                  .vi               .:i777:                                   8');
    writeln('8                 .::r          :q0EOBOOOBOMMX                                 8');
@@ -151,18 +170,18 @@ readkey;
    readkey;
    
    clrscr;
-// ApresentaÁ„o da terceira parte da historia do jogo
+// Apresenta√ß√£o da terceira parte da historia do jogo
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8      Por sorte ou por destino, vocÍ recebeu um ovo de Archen de seu avÙ,     8');
-   writeln('8      que lhe dizia que este era o ˙ltimo da espÈcie, e assim vocÍ            8');
+   writeln('8      Por sorte ou por destino, voc√™ recebeu um ovo de Archen de seu av√¥,     8');
+   writeln('8      que lhe dizia que este era o √∫ltimo da esp√©cie, e assim voc√™            8');
    writeln('8      acreditava...                                                           8');                                 
-   writeln('8      AtÈ o dia em que vocÍ viu o famoso Campe„o da Liga Quiz Go!,carregando  8');
-   writeln('8      nada mais, nada menos, que OUTRO ovo de Archen, fazendo um an˙ncio      8');
-   writeln('8      que È exibido em todos os canais de televis„o:                          8');
+   writeln('8      At√© o dia em que voc√™ viu o famoso Campe√£o da Liga Quiz Go!,carregando  8');
+   writeln('8      nada mais, nada menos, que OUTRO ovo de Archen, fazendo um an√∫ncio      8');
+   writeln('8      que √© exibido em todos os canais de televis√£o:                          8');
    writeln('8                                                                              8');
    writeln('8                                  ,7rrrr:                                     8');
    writeln('8                                rLi.   .iLr                                   8');
@@ -189,16 +208,16 @@ readkey;
    readkey;
    
    clrscr;
-// ApresentaÁ„o da quarta parte da historia do jogo
+// Apresenta√ß√£o da quarta parte da historia do jogo
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8      "Treinadores de todo o mundo! Eu tenho aqui a ˙ltima espÈcie do         8');
-   writeln('8      PokÈmon Archen! E ele ser· o prÍmio daquele que derrotar todos os       8');
-   writeln('8      lÌderes do meu gin·sio QUIZ GO! Mas fiquem alerta! O perdedor ter·      8');                                 
-   writeln('8      que ceder seu PokÈmon mais valioso! QUE SE INICIE O DESAFIO!"           8');
+   writeln('8      "Treinadores de todo o mundo! Eu tenho aqui a √∫ltima esp√©cie do         8');
+   writeln('8      Pok√©mon Archen! E ele ser√° o pr√™mio daquele que derrotar todos os       8');
+   writeln('8      l√≠deres do meu gin√°sio QUIZ GO! Mas fiquem alerta! O perdedor ter√°      8');                                 
+   writeln('8      que ceder seu Pok√©mon mais valioso! QUE SE INICIE O DESAFIO!"           8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
@@ -221,14 +240,14 @@ readkey;
    readkey;
    
    clrscr;
-// ApresentaÁ„o da ultima parte da historia do jogo
+// Apresenta√ß√£o da ultima parte da historia do jogo
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8      E assim sua busca se inicia, vocÍ pega sua BICICLETA, seu ˙nico         8');
-   writeln('8      pokÈmon crescido, e pedala atÈ o gin·sio que abriga os campeıes         8');
+   writeln('8      E assim sua busca se inicia, voc√™ pega sua BICICLETA, seu √∫nico         8');
+   writeln('8      pok√©mon crescido, e pedala at√© o gin√°sio que abriga os campe√µes         8');
    writeln('8      da liga Quiz Go! , determinado a enfrentar o maior desafio de           8');                                 
    writeln('8      sua vida!                                                               8');
    writeln('8                                                                              8');
@@ -257,8 +276,8 @@ readkey;
 	 
 	 clrscr;  
   writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
-  writeln('8                                  1∫ GIN¡SIO                                  8');
-  writeln('8                                  PORTUGU S                                   8');
+  writeln('8                                  1¬∫ GIN√ÅSIO                                  8');
+  writeln('8                                  PORTUGU√äS                                   8');
   writeln('8                                                                              8');     
   writeln('8                                                                              8');     
   writeln('8                                                                              8');      
@@ -267,10 +286,10 @@ readkey;
   writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
   writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
   writeln('8            vEMS7:                                             .iuGOSi        8');
-  writeln('8         ,MMu,    "Aqui comeÁa sua jornada, meu caro estudante      rPB5      8');
-  writeln('8        Z@:       E para inici·-la, vocÍ tem que derrotar o grande     0B,    8');
-  writeln('8       G@         Professor Pasquale, que vos fala. VocÍ est· pronto    ,B    8');
-  writeln('8       @:         para as minhas perguntas de PORTUGU S?                 @,   8');
+  writeln('8         ,MMu,    "Aqui come√ßa sua jornada, meu caro estudante      rPB5      8');
+  writeln('8        Z@:       E para inici√°-la, voc√™ tem que derrotar o grande     0B,    8');
+  writeln('8       G@         Professor Pasquale, que vos fala. Voc√™ est√° pronto    ,B    8');
+  writeln('8       @:         para as minhas perguntas de PORTUGU√äS?                 @,   8');
   writeln('8       Y@                                                               UB    8');
   writeln('8        7@U                                                           :@@     8');
   writeln('8          uMGr.                                                     :2MZi     8');
@@ -292,67 +311,79 @@ readkey;
   writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
   readkey; 
 
-clrscr;
-repeat
-level:=1;
-contvida:=0;  
+ // Limpatela
+ // Uso do repita at√© contador de vida = 0
+ clrscr;
+ repeat
+ // Atribui√ß√£o de valores
+ level:=1;
+ contvida:=0;  
   // Pergunta PORT 1
   // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: 0');
     writeln('');
     writeln('OPONENTE = PROFESSOR PASCAL - Portugon     HP = 100 ');
     // CAMPO DE PERGUNTAS
-    writeln('I) Qual das alternativas È uma oraÁ„o do tipo Adversidade?');
+    writeln('I) Qual das alternativas √© uma ora√ß√£o do tipo Adversidade?');
     writeln('');
-    writeln('1)A aula do professor È muito interessante, e divertida ');
-    writeln('2)N„o fui ‡ aula hoje porque estava doente.             ');
+    writeln('1)A aula do professor √© muito interessante, e divertida ');
+    writeln('2)N√£o fui √† aula hoje porque estava doente.             ');
     writeln('3)Eu gosto de bolo de chocolate, ela, de baunilha       ');
     writeln('4)O time jogou bem, mas perdeu o jogo                   ');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
     
+    //Mudan√ßa de Cores
     textcolor(lightgreen);
     clrscr;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='4' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='3') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -10 DE HP');
 				writeln('');
-		    life:=life-10
+		    life:=life-10;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O PARA RESPOSTA INV¡LIDA
+		    // SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 						else
 							begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 								end;			
-    // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+    // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
+    
+    // Mudan√ßa de Cores
 		textcolor(white);
   end;
-  //ATRIBUI«√O DE DADOS
+  //ATRIBUI√á√ÉO DE DADOS
   verif:='F';
   
   // Pergunta PORT 2
@@ -361,18 +392,18 @@ contvida:=0;
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: 0');
     writeln('');
     writeln('OPONENTE = PROFESSOR PASCAL - Portugon     HP = 60 ');
     // CAMPO DE PERGUNTAS
-    writeln('II) Qual a figura de linguagem utilizada na frase "Est· chovendo canivetes!"');
+    writeln('II) Qual a figura de linguagem utilizada na frase "Est√° chovendo canivetes!"');
     writeln('');
     writeln('1)Pleonasmo ');
     writeln('2)Elipse            ');
-    writeln('3)Met·fora      ');
-    writeln('4)MetonÌmia                 ');
+    writeln('3)Met√°fora      ');
+    writeln('4)Meton√≠mia                 ');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -382,37 +413,43 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='3' then
 		 begin
-		 verif:='V'
+		  // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -10 DE HP');
 				writeln('');
-		    life:=life-10
+		    life:=life-10 ;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O PARA RESPOSTA INV¡LIDA
+		    // SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 						else
 							begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 								end;			
-       // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+       // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
     textcolor(white);
   end;
-  //ATRIBUI«√O DE DADOS
+  //ATRIBUI√á√ÉO DE DADOS
   verif:='F';
 
   // Pergunta PORT 3
@@ -420,13 +457,13 @@ contvida:=0;
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: 0');
     writeln('');
     writeln('OPONENTE = PROFESSOR PASCAL - Portugon   HP = 20 ');
     // CAMPO DE PERGUNTAS
-    writeln('III)"Me disseram que os filmes do Senhor dos AnÈis s„o muito bons." Qual o tipo de sujeito?');
+    writeln('III)"Me disseram que os filmes do Senhor dos An√©is s√£o muito bons." Qual o tipo de sujeito?');
     writeln('');
     writeln('1)Oculto ');
     writeln('2)Simples            ');
@@ -440,37 +477,44 @@ contvida:=0;
      // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='4' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='3') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -10 DE HP');
 				writeln('');
-		    life:=life-10
+		    life:=life-10;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O PARA RESPOSTA INV¡LIDA
+		    // SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 						else
 							begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 								end;			
-    // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+    // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
        textcolor(white);
   end;
-  //ATRIBUI«√O DE DADOS
+  //ATRIBUI√á√ÉO DE DADOS
   verif:='F';
   cont:=0;
   
@@ -484,14 +528,14 @@ contvida:=0;
    writeln('8                                 PORTUGON                                     8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8   Ao som de pequenas engrenagens girando e bips, vocÍ nota que se aproxima   8');
-   writeln('8   um pequeno robÙ n„o chegando nem a bater em seu joelho: Portugon.          8');
-   writeln('8   Um robÙzinho de duas pernas rotatÛrias que se assemelha a uma ave,         8');
-   writeln('8   mas por ser feito de metal da cabeÁa aos pÈs, È  incapaz de voar.          8');
-   writeln('8   A criaturinha robÛtica tira um momento de sua cuidadosa leitura,           8');
-   writeln('8   para se aprÛximar de vocÍ e comeÁar o combate.                             8');
+   writeln('8   Ao som de pequenas engrenagens girando e bips, voc√™ nota que se aproxima   8');
+   writeln('8   um pequeno rob√¥ n√£o chegando nem a bater em seu joelho: Portugon.          8');
+   writeln('8   Um rob√¥zinho de duas pernas rotat√≥rias que se assemelha a uma ave,         8');
+   writeln('8   mas por ser feito de metal da cabe√ßa aos p√©s, √©  incapaz de voar.          8');
+   writeln('8   A criaturinha rob√≥tica tira um momento de sua cuidadosa leitura,           8');
+   writeln('8   para se apr√≥ximar de voc√™ e come√ßar o combate.                             8');
    writeln('8                                                                              8');
-   writeln('8 ##SEU POK…MON TEM A CAPACIDADE DE DAR DICAS EM 1 PERGUNTA NO PR”X. GIN¡SIO## 8');
+   writeln('8 ##SEU POK√âMON TEM A CAPACIDADE DE DAR DICAS EM 1 PERGUNTA NO PR√ìX. GIN√ÅSIO## 8');
    writeln('8                           :uZ2@ZY       ,                                    8');
    writeln('8                          LU2.: 20@    .B@                                    8');
    writeln('8                         X1757ivB@B   iYB7                                    8');
@@ -503,68 +547,68 @@ contvida:=0;
    writeln('8                          r1.   :PBr,,v@BM:                                   8');
    writeln('8                                :F2Z@F:                                       8');
    writeln('8                                                                              8');
-   writeln('8     *** LEMBRE-SE: PARA US¡-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
+   writeln('8     *** LEMBRE-SE: PARA US√Å-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
 	 writeln('8                                                                              8');                                                                   
    writeln('8                      PRESSIONE QUALQUER TECLA..                              8');
 	 writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
 	 readkey;   
 
-clrscr;  
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
-writeln('8                                   2∫ GIN¡SIO                                 8');
-writeln('8                                    CI NCIAS                                  8');
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
-writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
-writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
-writeln('8            vEMS7:                                             .iuGOSi        8');
-writeln('8         ,MMu,    "Ol· e bem-vindo ao gin·sio de CI NCIAS,          rPB5      8');
-writeln('8        Z@:       eu serei seu advers·rio, Professor Valtinho Branco.  0B,    8');
-writeln('8       G@         espero que ainda se lembre das suas aulas de          ,B    8');
-writeln('8       @:         Biologia, QuÌmica e FÌsica. VAI, BIOSSAURO!"           @,   8');
-writeln('8       Y@                                                               UB    8');
-writeln('8        7@U                                                           :@@     8');
-writeln('8          uMGr.                                                     :2MZi     8');
-writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
-writeln('8                :r2PNku7;:,.                                @NFJi.            8');
-writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
-writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
-writeln('8                                                     ,iY1SE@                  8');
-writeln('8                                                         1SE@                 8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                              PROFESSOR VALTINHO BRANCO       8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
-readkey;
-end;
+ clrscr;  
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
+ writeln('8                                   2¬∫ GIN√ÅSIO                                 8');
+ writeln('8                                    CI√äNCIAS                                  8');
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
+ writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
+ writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
+ writeln('8            vEMS7:                                             .iuGOSi        8');
+ writeln('8         ,MMu,    "Ol√° e bem-vindo ao gin√°sio de CI√äNCIAS,          rPB5      8');
+ writeln('8        Z@:       eu serei seu advers√°rio, Professor Valtinho Branco.  0B,    8');
+ writeln('8       G@         espero que ainda se lembre das suas aulas de          ,B    8');
+ writeln('8       @:         Biologia, Qu√≠mica e F√≠sica. VAI, BIOSSAURO!"           @,   8');
+ writeln('8       Y@                                                               UB    8');
+ writeln('8        7@U                                                           :@@     8');
+ writeln('8          uMGr.                                                     :2MZi     8');
+ writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
+ writeln('8                :r2PNku7;:,.                                @NFJi.            8');
+ writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
+ writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
+ writeln('8                                                     ,iY1SE@                  8');
+ writeln('8                                                         1SE@                 8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                              PROFESSOR VALTINHO BRANCO       8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
+ readkey;
+ end;
   
-clrscr; 
-repeat
-contvida:=0;
-level:=2;   
+ clrscr; 
+ repeat
+ contvida:=0;
+ level:=2;   
   // Pergunta CIENCIAS 1
     // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: Portugon  "P"');
     writeln('');
     writeln('OPONENTE = Valtinho Branco (Walter White) - Biossauro   HP = 100 ');
     // CAMPO DE PERGUNTAS
-    writeln('I) Em quantos Graus CelsiuS a ·gua entra em ponto de fus„o?');
+    writeln('I) Em quantos Graus CelsiuS a √°gua entra em ponto de fus√£o?');
     writeln('');
     writeln('1)100 ');
     writeln('2)0             ');
@@ -579,56 +623,64 @@ level:=2;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
+		 
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -15 DE HP');
 				writeln('');
-		    life:=life-15
+		    life:=life-15;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
 							cont:=1;
-							writeln('VOC  USOU O POK…MON PORTUGON!');
-							writeln('DICA: ACHO QUE A RESPOSTA SER¡ A SUA NOTA SE VOC  N√O ACERTAR');
+							pok:=1;
+							writeln('VOC√ä USOU O POK√âMON PORTUGON!');
+							writeln('DICA: ACHO QUE A RESPOSTA SER√Å A SUA NOTA SE VOC√ä N√ÉO ACERTAR');
 							writeln('');
 							end
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU SUA DICA! :)');
+								writeln('VOC√ä J√Å USOU SUA DICA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		      //ATRIBUI«√O DE DADOS
+		      //ATRIBUI√á√ÉO DE DADOS
 		      verif:='F';
 		      
 	 // Pergunta CIENCIAS 2
@@ -636,13 +688,13 @@ level:=2;
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: Portugon  "P"');
     writeln('');
     writeln('OPONENTE = Valtinho Branco (Walter White) - Biossauro    HP = 60 ');
     // CAMPO DE PERGUNTAS
-    writeln('II) Quantas LigaÁıes o Carbono pode fazer?');
+    writeln('II) Quantas Liga√ß√µes o Carbono pode fazer?');
     writeln('');
     writeln('1)1 ');
     writeln('2)2             ');
@@ -656,54 +708,61 @@ level:=2;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='4' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='3') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -15 DE HP');
 				writeln('');
-		    life:=life-15
+		    life:=life-15;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	// SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	// SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 					 if (resp='P') or (resp='p') then
 						 if (cont=0) then
 						begin
 							cont:=1;
-							writeln('VOC  USOU O POK…MON PORTUGON!');
-							writeln('DICA: ELE N√O ENTRARIA PRO P”DIO..');
+							pok:=1;
+							writeln('VOC√ä USOU O POK√âMON PORTUGON!');
+							writeln('DICA: ELE N√ÉO ENTRARIA PRO P√ìDIO..');
 							writeln('');
 							end
-								// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+								// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 							if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU SUA DICA! :)');
+								writeln('VOC√ä J√Å USOU SUA DICA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-		    //ATRIBUI«√O DE DADOS
+		    //ATRIBUI√á√ÉO DE DADOS
 		    verif:='F';
 		   textcolor(white);
 			   
@@ -712,18 +771,18 @@ level:=2;
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: Portugon  "P"');
     writeln('');
     writeln('OPONENTE = Valtinho Branco (Walter White) - Biossauro    HP = 20 ');
     // CAMPO DE PERGUNTAS
-    writeln('III) Qual desses elementos n„o existe na tabela periÛdica?');
+    writeln('III) Qual desses elementos n√£o existe na tabela peri√≥dica?');
     writeln('');
-    writeln('1) TungstÍnio ');
-    writeln('2) Germ‚nico  ');
+    writeln('1) Tungst√™nio ');
+    writeln('2) Germ√¢nico  ');
     writeln('3) Iodo   ');
-    writeln('4) Hisp‚nico ');
+    writeln('4) Hisp√¢nico ');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -732,54 +791,61 @@ level:=2;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='4' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='3') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -15 DE HP');
 				writeln('');
-		    life:=life-15
+		    life:=life-15;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	// SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	// SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 					   if (resp='P') or (resp='p') then
 					  	if (cont=0) then
 							begin
 							cont:=1;
-							writeln('VOC  USOU O POK…MON PORTUGON!');
-							writeln('DICA: ⁄STED SABE LA RESPUESTA, NIEGRO.. ');
+							pok:=1;
+							writeln('VOC√ä USOU O POK√âMON PORTUGON!');
+							writeln('DICA: √öSTED SABE LA RESPUESTA, NIEGRO.. ');
 							writeln('');
 							end
-								// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+								// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU SUA DICA! :)');
+								writeln('VOC√ä J√Å USOU SUA DICA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-        //ATRIBUI«√O DE DADOS
+        //ATRIBUI√á√ÉO DE DADOS
  		    verif:='F';
  		    cont:=0;
  		    textcolor(white);  
@@ -794,15 +860,15 @@ level:=2;
    writeln('8                                BIOSSAURO                                     8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8   VocÍ se espanta por um momento quando nota  uma repentina agitaÁ„o         8');
-   writeln('8   no meio  das diversas folhagens que carpetam o gin·sio,È quando uma        8');
-   writeln('8   das plantas sai do meio das folhagens e d· um rosnado brincalh„o           8');
-   writeln('8   VocÍ percebe que n„o se trata de uma planta,mas sim do PokÈmon BIOSSAURO.  8');
-   writeln('8   Um pequeno dinossauro verde, n„o chegando meio metro de altura,            8');
+   writeln('8   Voc√™ se espanta por um momento quando nota  uma repentina agita√ß√£o         8');
+   writeln('8   no meio  das diversas folhagens que carpetam o gin√°sio,√© quando uma        8');
+   writeln('8   das plantas sai do meio das folhagens e d√° um rosnado brincalh√£o           8');
+   writeln('8   Voc√™ percebe que n√£o se trata de uma planta,mas sim do Pok√©mon BIOSSAURO.  8');
+   writeln('8   Um pequeno dinossauro verde, n√£o chegando meio metro de altura,            8');
    writeln('8   com um bulbo de planta em suas costas,                                     8');
    writeln('8   vestido com um pequeno jaleco branco de cientista, pronto pra atacar       8');
    writeln('8                                                                              8');
-   writeln('8     ##SEU POK…MON TEM A CAPACIDADE DE PULAR 1 PERGUNTA NO PR”X. GIN¡SIO##    8');
+   writeln('8     ##SEU POK√âMON TEM A CAPACIDADE DE PULAR 1 PERGUNTA NO PR√ìX. GIN√ÅSIO##    8');
    writeln('8                                                 .vZGu,                       8');
    writeln('8                                         iJX0NjL7LL2j@U                       8');
    writeln('8                                 iLr    7uNuvr7;77YLYBP                       8');
@@ -819,74 +885,74 @@ level:=2;
    writeln('8                                  rLO@L  :UMF;EL rBZ1@G                       8');
    writeln('8                                    .     .:iU:   :i7i                        8');
    writeln('8                                                                              8');
-   writeln('8     *** LEMBRE-SE: PARA US¡-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
+   writeln('8     *** LEMBRE-SE: PARA US√Å-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
 	 writeln('8                                                                              8');                                                                   
    writeln('8                      PRESSIONE QUALQUER TECLA..                              8');
 	 writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
 	 readkey; 		
  
   
-clrscr;  
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
-writeln('8                                  3∫ GIN¡SIO                                  8');
-writeln('8                                   HIST”RIA                                   8');
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
-writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
-writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
-writeln('8            vEMS7:                                             .iuGOSi        8');
-writeln('8         ,MMu,    "Ahhh, sim, sim. Os professores me informaram     rPB5      8');
-writeln('8        Z@:       da sua chegada. Eu sou o professor Dumb Bulldog,     0B,    8');
-writeln('8       G@         e irei avaliar se vocÍ est· pronto pra continuar      ,B    8');
-writeln('8       @:         sua jornada com minhas perguntas de HIST”RIA.          @,   8');
-writeln('8       Y@         VAI, AEROD¡TICO!"                                     UB    8');
-writeln('8        7@U                                                           :@@     8');
-writeln('8          uMGr.                                                    :2MZi      8');
-writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
-writeln('8                :r2PNku7;:,.                                @NFJi.            8');
-writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
-writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
-writeln('8                                                     ,iY1SE@                  8');
-writeln('8                                                         1SE@                 8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                               PROFESSOR  DUMB BULL DOG       8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
-readkey;
-end;
+ clrscr;  
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
+ writeln('8                                  3¬∫ GIN√ÅSIO                                  8');
+ writeln('8                                   HIST√ìRIA                                   8');
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
+ writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
+ writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
+ writeln('8            vEMS7:                                             .iuGOSi        8');
+ writeln('8         ,MMu,    "Ahhh, sim, sim. Os professores me informaram     rPB5      8');
+ writeln('8        Z@:       da sua chegada. Eu sou o professor Dumb Bulldog,     0B,    8');
+ writeln('8       G@         e irei avaliar se voc√™ est√° pronto pra continuar      ,B    8');
+ writeln('8       @:         sua jornada com minhas perguntas de HIST√ìRIA.          @,   8');
+ writeln('8       Y@         VAI, AEROD√ÅTICO!"                                     UB    8');
+ writeln('8        7@U                                                           :@@     8');
+ writeln('8          uMGr.                                                    :2MZi      8');
+ writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
+ writeln('8                :r2PNku7;:,.                                @NFJi.            8');
+ writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
+ writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
+ writeln('8                                                     ,iY1SE@                  8');
+ writeln('8                                                         1SE@                 8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                               PROFESSOR  DUMB BULL DOG       8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
+ readkey;
+ end;
  		
-clrscr;
-repeat
-contvida:=0;
-level:=3;     
-  // Pergunta HIST”RIA 1
+ clrscr;
+ repeat
+ contvida:=0;
+ level:=3;     
+  // Pergunta HIST√ìRIA 1
       // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: BIOSSAURO ');
     writeln('');
-    writeln('OPONENTE = Dumb bulldog  - Aerod·tico   HP = 100 ');
+    writeln('OPONENTE = Dumb bulldog  - Aerod√°tico   HP = 100 ');
     // CAMPO DE PERGUNTAS
-    writeln('I)Na Idade Antiga existia uma escrita feita pelos egÌpcios. Qual È o nome desta escrita?');
+    writeln('I)Na Idade Antiga existia uma escrita feita pelos eg√≠pcios. Qual √© o nome desta escrita?');
     writeln('');
     writeln('1)Cuneiforme ');
-    writeln('2)HierÛglifo   ');
+    writeln('2)Hier√≥glifo   ');
     writeln('3)Acadiano    ');
-    writeln('4)EgÌpcia       ');
+    writeln('4)Eg√≠pcia       ');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -895,71 +961,78 @@ level:=3;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA		 
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA		 
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -20 DE HP');
 				writeln('');
-		    life:=life-20
+		    life:=life-20;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON BIOSSAURO!');
-							writeln('VOC  PULOU');
+							writeln('VOC√ä USOU O POK√âMON BIOSSAURO!');
+							writeln('VOC√ä PULOU');
 							writeln('');
 							verif:='V';
 							cont:=cont+1 ;
+							pok:=1;
 							end
-						// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+						// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ PULOU UMA PERGUNTA! :)');
+								writeln('VOC√ä J√Å PULOU UMA PERGUNTA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		      //ATRIBUI«√O DE DADOS		  
+		      //ATRIBUI√á√ÉO DE DADOS		  
 		      verif:='F';
 		      
-	// Pergunta HIST”RIA 2
+	// Pergunta HIST√ìRIA 2
   // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: BIOSSAURO ');
     writeln('');
     writeln('OPONENTE = Dumb bulldog     HP = 70 ');
     // CAMPO DE PERGUNTAS
-    writeln('II) Qual era o estilo polÌtico da Inglaterra anterior a RevoluÁ„o Inglesa?');
+    writeln('II) Qual era o estilo pol√≠tico da Inglaterra anterior a Revolu√ß√£o Inglesa?');
     writeln('');
     writeln('1)Monarquia Absolutista. ');
     writeln('2)Democracia   ');
@@ -974,70 +1047,78 @@ level:=3;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='1' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
+		 
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA	
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA	
 			else
 				if (resp='2') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -20 DE HP');
-		    life:=life-20
+		    life:=life-20;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 					  if (resp='P') or (resp='p') then
 						  if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON BIOSSAURO!');
-							writeln('VOC  PULOU');
+							writeln('VOC√ä USOU O POK√âMON BIOSSAURO!');
+							writeln('VOC√ä PULOU');
 							writeln('');
 							verif:='V';
 							cont:=cont+1 ;
+							pok:=1;
 							end
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ PULOU UMA PERGUNTA! :)');
+								writeln('VOC√ä J√Å PULOU UMA PERGUNTA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 												
-      // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+      // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-		      //ATRIBUI«√O DE DADOS		
+		      //ATRIBUI√á√ÉO DE DADOS		
 		      verif:='F';
 		    textcolor(white);    
-	// Pergunta HIST”RIA 3
+	// Pergunta HIST√ìRIA 3
 	// USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
   
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: BIOSSAURO ');
     writeln('');
     writeln('OPONENTE = Dumb bulldog     HP = 40 ');
     // CAMPO DE PERGUNTAS
-    writeln('III) Que perÌodo durou a Ditadura Militar no Brasil?');
+    writeln('III) Que per√≠odo durou a Ditadura Militar no Brasil?');
     writeln('');
     writeln('1)1964-1985 ');
     writeln('2)1914-1919   ');
@@ -1052,74 +1133,82 @@ level:=3;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='1' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
+		 
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA	
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA	
 			else
 				if (resp='2') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -20 DE HP');
-		    life:=life-20
+		    life:=life-20;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
 		    	else
 						if (resp='P') or (resp='p') then
 						  if (cont=0) then
 							begin
-						  writeln('VOC  USOU O POK…MON BIOSSAURO!');
-							writeln('VOC  PULOU');
+						  writeln('VOC√ä USOU O POK√âMON BIOSSAURO!');
+							writeln('VOC√ä PULOU');
 							writeln('');
 							verif:='V';
 							cont:=cont+1 ;
+							pok:=1;
 							end
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ PULOU UMA PERGUNTA! :)');
+								writeln('VOC√ä J√Å PULOU UMA PERGUNTA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;			
       
-			 // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			 // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		      //ATRIBUI«√O DE DADOS		
+		      //ATRIBUI√á√ÉO DE DADOS		
 		      verif:='F';
-  // Pergunta HIST”RIA 4
+  // Pergunta HIST√ìRIA 4
   // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
   
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: BIOSSAURO ');
     writeln('');
     writeln('OPONENTE = Dumb bulldog     HP = 10 ');
     // CAMPO DE PERGUNTAS
-    writeln('IV) Qual era o nome do Rei dos Deuses para os egÌpcios?');
+    writeln('IV) Qual era o nome do Rei dos Deuses para os eg√≠pcios?');
     writeln('');
-    writeln('1)OsÌris ');
+    writeln('1)Os√≠ris ');
     writeln('2)Tot  ');
-    writeln('3)HÛrus   ');
-    writeln('4)R·   ');
+    writeln('3)H√≥rus   ');
+    writeln('4)R√°   ');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -1129,55 +1218,63 @@ level:=3;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='4' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
+		 
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA	
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA	
 			else
 				if (resp='1') or (resp='2') or (resp='3') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -20 DE HP');
-		    life:=life-20
+		    life:=life-20;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
 		    	else
 						if (resp='P') or (resp='p') then
 					   	if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON BIOSSAURO!');
-							writeln('VOC  PULOU');
+							writeln('VOC√ä USOU O POK√âMON BIOSSAURO!');
+							writeln('VOC√ä PULOU');
 							writeln('');
 							verif:='V';
 							cont:=cont+1 ;
+							pok:=1;
 							end
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ PULOU UMA PERGUNTA! :)');
+								writeln('VOC√ä J√Å PULOU UMA PERGUNTA! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;			
      
-		  // MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		  // MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		      //ATRIBUI«√O DE DADOS		
+		      //ATRIBUI√á√ÉO DE DADOS		
 		      verif:='F';
 		      cont:=0;
 	   until contvida=0; 
@@ -1188,20 +1285,20 @@ level:=3;
    writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8                                AEROD¡TICO                                    8');
+   writeln('8                                AEROD√ÅTICO                                    8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8   VocÍ ouve um rugido agudo ecoando metros acima de sua cabeÁa,              8');
-   writeln('8   olha pra cima e vÍ a forma gigante do drag„o AEROD¡TICO,                   8');
-   writeln('8   voando por cima das v·rias estantes de livros de histÛria                  8');
-   writeln('8   que constituem o magnÌfico "gin·sio-biblioteca",                           8');
-   writeln('8   sua forma de drag„o cinzento de pele dura fazendo eclipses                 8');
-   writeln('8   em cada raio de luz por onde voa atÈ finalmente pousar                     8');
+   writeln('8   Voc√™ ouve um rugido agudo ecoando metros acima de sua cabe√ßa,              8');
+   writeln('8   olha pra cima e v√™ a forma gigante do drag√£o AEROD√ÅTICO,                   8');
+   writeln('8   voando por cima das v√°rias estantes de livros de hist√≥ria                  8');
+   writeln('8   que constituem o magn√≠fico "gin√°sio-biblioteca",                           8');
+   writeln('8   sua forma de drag√£o cinzento de pele dura fazendo eclipses                 8');
+   writeln('8   em cada raio de luz por onde voa at√© finalmente pousar                     8');
    writeln('8   sua forma intimidadora em sua frente, suas asas terminando de bater,       8');
-   writeln('8   fazendo a poeira voar por entre seus pÈs...                                8');
-   writeln('8   Finalmente optando por disfarÁar o medo... VocÍ d· um passo a frente.      8');
+   writeln('8   fazendo a poeira voar por entre seus p√©s...                                8');
+   writeln('8   Finalmente optando por disfar√ßar o medo... Voc√™ d√° um passo a frente.      8');
    writeln('8                                                                              8');
-   writeln('8  ## SEU POK…MON TEM A CAPACIDADE DE ANULAR 2 RESPOSTAS NO PR”X. GIN¡SIO ##   8');
+   writeln('8  ## SEU POK√âMON TEM A CAPACIDADE DE ANULAR 2 RESPOSTAS NO PR√ìX. GIN√ÅSIO ##   8');
    writeln('8                                              7                               8');
    writeln('8                         .,   :               ii:.,..                         8');
    writeln('8                        iqBi ;OBrujrr:       ,5@BBM@B@MP7.                    8');
@@ -1215,69 +1312,69 @@ level:=3;
    writeln('8                                  ,uBXE@XL@BNS7.                              8');
 	 writeln('8                                   OB   .L@:                                  8');
    writeln('8                                                                              8');
-   writeln('8     *** LEMBRE-SE: PARA US¡-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
+   writeln('8     *** LEMBRE-SE: PARA US√Å-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
 	 writeln('8                                                                              8');                                                                   
    writeln('8                      PRESSIONE QUALQUER TECLA..                              8');
 	 writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
 	 readkey;	   
 
-clrscr;  
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
-writeln('8                                  4∫ GIN¡SIO                                  8');
-writeln('8                                  MATEM¡TICA                                  8');
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
-writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
-writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
-writeln('8            vEMS7:                                             .iuGOSi        8');
-writeln('8         ,MMu,    "VocÍ deve ser bem "mizer·vi" pra chegar atÈ aqui.  PB5     8');
-writeln('8        Z@:       Mas lamento te informar que aqui termina sua batalha.  0B,  8');
-writeln('8       G@         Duvida? Ent„o testemunhe meu teste de matem·tica!     ,B    8');
-writeln('8       @:         VAI, PI DE OITO!"                                      @,   8');
-writeln('8       Y@                                                               UB    8');
-writeln('8        7@U                                                           :@@     8');
-writeln('8          uMGr.                                                    :2MZi      8');
-writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
-writeln('8                :r2PNku7;:,.                                @NFJi.            8');
-writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
-writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
-writeln('8                                                     ,iY1SE@                  8');
-writeln('8                                                         1SE@                 8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                   PROFESSOR  PEL…ZINHO       8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
-readkey;  
-end;
+ clrscr;  
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
+ writeln('8                                  4¬∫ GIN√ÅSIO                                  8');
+ writeln('8                                  MATEM√ÅTICA                                  8');
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
+ writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
+ writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
+ writeln('8            vEMS7:                                             .iuGOSi        8');
+ writeln('8         ,MMu,    "Voc√™ deve ser bem "mizer√°vi" pra chegar at√© aqui.  PB5     8');
+ writeln('8        Z@:       Mas lamento te informar que aqui termina sua batalha.  0B,  8');
+ writeln('8       G@         Duvida? Ent√£o testemunhe meu teste de matem√°tica!     ,B    8');
+ writeln('8       @:         VAI, PI DE OITO!"                                      @,   8');
+ writeln('8       Y@                                                               UB    8');
+ writeln('8        7@U                                                           :@@     8');
+ writeln('8          uMGr.                                                    :2MZi      8');
+ writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
+ writeln('8                :r2PNku7;:,.                                @NFJi.            8');
+ writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
+ writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
+ writeln('8                                                     ,iY1SE@                  8');
+ writeln('8                                                         1SE@                 8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                   PROFESSOR  PEL√âZINHO       8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
+ readkey;  
+ end;
 
 	   
-clrscr;
-repeat
-contvida:=0;
-level:=4;    
+ clrscr;
+ repeat
+ contvida:=0;
+ level:=4;    
   // Pergunta MATEMATICA 1
   // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
-    writeln('POKEMONS DISPONIVEIS: Aerod·tico ');
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
+    writeln('POKEMONS DISPONIVEIS: Aerod√°tico ');
     writeln('');
-    writeln('OPONENTE = Professor PelÈzinho  - Pi de Oito  HP = 100 ');
+    writeln('OPONENTE = Professor Pel√©zinho  - Pi de Oito  HP = 100 ');
     // CAMPO DE PERGUNTAS
-    writeln('I) Qual ‚ngulo em radianos representa 360∫? ');
+    writeln('I) Qual √¢ngulo em radianos representa 360¬∫? ');
     writeln('');
     writeln('1)PI');
     writeln('2)2PI   ');
@@ -1291,55 +1388,62 @@ level:=4;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -25 DE HP');
-		    life:=life-25
+		    life:=life-25 ;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		     // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		     // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON AEROD¡TICO!');
-							writeln('ALTERNATIVAS 3 E 4 EST√O ERRADAS ');
+							writeln('VOC√ä USOU O POK√âMON AEROD√ÅTICO!');
+							writeln('ALTERNATIVAS 3 E 4 EST√ÉO ERRADAS ');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU O SEU POKEMON! :)');
+								writeln('VOC√ä J√Å USOU O SEU POKEMON! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-        //ATRIBUI«√O DE DADOS
+        //ATRIBUI√á√ÉO DE DADOS
 		      verif:='F';
 		    textcolor(white);
 				    
@@ -1348,18 +1452,18 @@ level:=4;
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
-    writeln('POKEMONS DISPONIVEIS: Aerod·tico ');
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
+    writeln('POKEMONS DISPONIVEIS: Aerod√°tico ');
     writeln('');
-    writeln('OPONENTE = Professor PelÈzinho   HP = 70 ');
+    writeln('OPONENTE = Professor Pel√©zinho   HP = 70 ');
     // CAMPO DE PERGUNTAS
     writeln('II) Qual a formula de Delta? ');
     writeln('');
-    writeln('1)Delta = -b≤*4*a*c  ?');
-    writeln('2)Delta = b≤-4*a-c   ?');
-    writeln('3)Delta= b≤-4*a*c  ');
-    writeln('4)Delta= b≤+a≤+c≤      ');
+    writeln('1)Delta = -b¬≤*4*a*c  ?');
+    writeln('2)Delta = b¬≤-4*a-c   ?');
+    writeln('3)Delta= b¬≤-4*a*c  ');
+    writeln('4)Delta= b¬≤+a¬≤+c¬≤      ');
    //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -1368,55 +1472,62 @@ level:=4;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='3' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -25 DE HP');
-		    life:=life-25
+		    life:=life-25;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		     // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		     // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON AEROD¡TICO!');
-							writeln('ALTERNATIVAS 2 E 4 EST√O ERRADAS ');
+							writeln('VOC√ä USOU O POK√âMON AEROD√ÅTICO!');
+							writeln('ALTERNATIVAS 2 E 4 EST√ÉO ERRADAS ');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU O SEU POKEMON! :)');
+								writeln('VOC√ä J√Å USOU O SEU POKEMON! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-        //ATRIBUI«√O DE DADOS
+        //ATRIBUI√á√ÉO DE DADOS
 		      verif:='F';
 		     textcolor(white);   
 // Pergunta MATEMATICA 3
@@ -1424,16 +1535,16 @@ level:=4;
    while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
-    writeln('POKEMONS DISPONIVEIS: Aerod·tico ');
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
+    writeln('POKEMONS DISPONIVEIS: Aerod√°tico ');
     writeln('');
-    writeln('OPONENTE = Professor PelÈzinho   HP = 40 ');
+    writeln('OPONENTE = Professor Pel√©zinho   HP = 40 ');
      // CAMPO DE PERGUNTAS
-    writeln('III) Qual a formula do perÌmetro de uma circunferÍncia? ');
+    writeln('III) Qual a formula do per√≠metro de uma circunfer√™ncia? ');
     writeln('');
-    writeln('1)Pi*r≤ ');
-    writeln('2)2pi * r≤ ');
+    writeln('1)Pi*r¬≤ ');
+    writeln('2)2pi * r¬≤ ');
     writeln('3)2pi * r  ');
     writeln('4)pi*r     ');
     //ENTRADA DE DADOS
@@ -1444,55 +1555,62 @@ level:=4;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='3' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='2') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -25 DE HP');
-		    life:=life-25
+		    life:=life-25 ;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		     // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		     // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON AEROD¡TICO!');
-							writeln('ALTERNATIVAS 1 E 4 EST√O ERRADAS ');
+							writeln('VOC√ä USOU O POK√âMON AEROD√ÅTICO!');
+							writeln('ALTERNATIVAS 1 E 4 EST√ÉO ERRADAS ');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU O SEU POKEMON! :)');
+								writeln('VOC√ä J√Å USOU O SEU POKEMON! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-        //ATRIBUI«√O DE DADOS
+        //ATRIBUI√á√ÉO DE DADOS
 		      verif:='F';
 		      textcolor(white);  
 // Pergunta MATEMATICA 4
@@ -1500,13 +1618,13 @@ level:=4;
   while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
-    writeln('POKEMONS DISPONIVEIS: Aerod·tico ');
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
+    writeln('POKEMONS DISPONIVEIS: Aerod√°tico ');
     writeln('');
-    writeln('OPONENTE = Professor PelÈzinho   HP = 10 ');
+    writeln('OPONENTE = Professor Pel√©zinho   HP = 10 ');
     // CAMPO DE PERGUNTAS
-    writeln('IV) Qual o resultado da seguinte equaÁ„o: x≤ + 2x  + 4 = 0 ? ');
+    writeln('IV) Qual o resultado da seguinte equa√ß√£o: x¬≤ + 2x  + 4 = 0 ? ');
     writeln('');
     writeln('1) (-2 + 2i)/2 e (2 + 2i)/2 ');
     writeln('2) 2i ');
@@ -1520,55 +1638,62 @@ level:=4;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='1' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='2') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -25 DE HP');
-		    life:=life-25
+		    life:=life-25;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		     // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		     // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 							begin
-							writeln('VOC  USOU O POK…MON AEROD¡TICO!');
-							writeln('ALTERNATIVAS 2 E 4 EST√O ERRADAS ');
+							writeln('VOC√ä USOU O POK√âMON AEROD√ÅTICO!');
+							writeln('ALTERNATIVAS 2 E 4 EST√ÉO ERRADAS ');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  J¡ USOU O SEU POKEMON! :)');
+								writeln('VOC√ä J√Å USOU O SEU POKEMON! :)');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
-        //ATRIBUI«√O DE DADOS
+        //ATRIBUI√á√ÉO DE DADOS
 		      verif:='F';
 					cont:=0;
 			textcolor(white);		
@@ -1584,17 +1709,17 @@ level:=4;
    writeln('8                                 PI DE OITO                                   8');
    writeln('8                                                                              8');
    writeln('8                                                                              8');
-   writeln('8   No meio do gin·sio de matem·tica, onde existe uma gigantesca ·rvore seca   8');
-   writeln('8   completamente coberta por somas, equaÁıes e logarÌtmos variados,           8');
-   writeln('8   vocÍ vÍ, apoiado no galho mais alto, o PI DE OITO!                         8');
-   writeln('8   Uma belÌssima ave, de pelo menos dois metros de altura e penas             8');
-   writeln('8   nas cores branca, magenta, e marrom.Ela vira os olhos afiados para vocÍ,   8');
-   writeln('8   como um falc„o que acaba de detectar sua presa,                            8');
-   writeln('8   e ent„o levanta as asas e d· um rasante  em sua direÁ„o.                   8');
-   writeln('8   Mas enquanto o vÙo da ave È rapido e turbulento,                           8');
-   writeln('8   o pouso È delicado e calculado. VocÍ se prepara para um ·rduo desafio.     8');
+   writeln('8   No meio do gin√°sio de matem√°tica, onde existe uma gigantesca √°rvore seca   8');
+   writeln('8   completamente coberta por somas, equa√ß√µes e logar√≠tmos variados,           8');
+   writeln('8   voc√™ v√™, apoiado no galho mais alto, o PI DE OITO!                         8');
+   writeln('8   Uma bel√≠ssima ave, de pelo menos dois metros de altura e penas             8');
+   writeln('8   nas cores branca, magenta, e marrom.Ela vira os olhos afiados para voc√™,   8');
+   writeln('8   como um falc√£o que acaba de detectar sua presa,                            8');
+   writeln('8   e ent√£o levanta as asas e d√° um rasante  em sua dire√ß√£o.                   8');
+   writeln('8   Mas enquanto o v√¥o da ave √© rapido e turbulento,                           8');
+   writeln('8   o pouso √© delicado e calculado. Voc√™ se prepara para um √°rduo desafio.     8');
    writeln('8                                                                              8');
-   writeln('8    ## SEU POK…MON TEM A CAPACIDADE DE DAR +50 DE HP NO PR”X. GIN¡SIO ##      8');
+   writeln('8    ## SEU POK√âMON TEM A CAPACIDADE DE DAR +50 DE HP NO PR√ìX. GIN√ÅSIO ##      8');
    writeln('8                                                  :X                          8');
    writeln('8                                                 ,:                           8');
    writeln('8                                 .Y           :EJjv.                          8');
@@ -1610,72 +1735,72 @@ level:=4;
    writeln('8                                    7     BSF@XSL                             8');
 	 writeln('8                                          jP.uE:                              8');
    writeln('8                                                                              8');
-   writeln('8     *** LEMBRE-SE: PARA US¡-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
+   writeln('8     *** LEMBRE-SE: PARA US√Å-LO BASTA INSERIR "P" NO CAMPO DE RESPOSTA ***    8'); 
 	 writeln('8                                                                              8');                                                                   
    writeln('8                      PRESSIONE QUALQUER TECLA..                              8');
 	 writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
 	 readkey;
-clrscr;  
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
-writeln('8                                 ⁄LTIMO GIN¡SIO                               8');
-writeln('8                                  INFORM¡TICA                                 8');
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
-writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
-writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
-writeln('8            vEMS7:                                             .iuGOSi        8');
-writeln('8         ,MMu,    "Ora, ora, ora. O que temos aqui?                 rPB5      8');
-writeln('8        Z@:       Um desafiante que se acha capaz de se tornar         0B,    8');
-writeln('8       G@         o novo campe„o do Quiz GO!? Eu te alerto, jovem.      ,B    8');
-writeln('8       @:         Todos os desafios que vocÍ enfrentou,                  @,   8');
-writeln('8       Y@         Prepare-se para o confronto de sua vida!              UB    8');
-writeln('8        7@U       VAI, MIL !"                                         :@@     8');
-writeln('8          uMGr.                                                    :2MZi      8');
-writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
-writeln('8                :r2PNku7;:,.                                @NFJi.            8');
-writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
-writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
-writeln('8                                                     ,iY1SE@                  8');
-writeln('8                                                         1SE@                 8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                      BILL JOBS               8');     
-writeln('8                                                                              8');      
-writeln('8                                                                              8'); 
-writeln('8                                                                              8');     
-writeln('8                                                                              8');     
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                                                                              8');
-writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
-writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
-readkey;
-end;	 
+ clrscr;  
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
+ writeln('8                                 √öLTIMO GIN√ÅSIO                               8');
+ writeln('8                                  INFORM√ÅTICA                                 8');
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                            ..,:iirr77vvLvLv7rrii::..                         8');
+ writeln('8                    .:7uUSqk55JJvv7ririi:i:ri;r7vYY11Skk1uLr:.                8');
+ writeln('8              :vUZqFvv:,                               .:r7UFGPui.            8');
+ writeln('8            vEMS7:                                             .iuGOSi        8');
+ writeln('8         ,MMu,    "Ora, ora, ora. O que temos aqui?                 rPB5      8');
+ writeln('8        Z@:       Um desafiante que se acha capaz de se tornar         0B,    8');
+ writeln('8       G@         o novo campe√£o do Quiz GO!? Eu te alerto, jovem.      ,B    8');
+ writeln('8       @:         Todos os desafios que voc√™ enfrentou,                  @,   8');
+ writeln('8       Y@         Prepare-se para o confronto de sua vida!              UB    8');
+ writeln('8        7@U       VAI, MIL !"                                         :@@     8');
+ writeln('8          uMGr.                                                    :2MZi      8');
+ writeln('8           ,UqOF7:.                                          .;LE8Xr          8');
+ writeln('8                :r2PNku7;:,.                                @NFJi.            8');
+ writeln('8                    .,i7JuXSFS12uYJYLvLvLvLJjj1J;,        J@                  8');
+ writeln('8                                ..,:::i:i:i:::,,;LXPq5ur:  Bv                 8');
+ writeln('8                                                     ,iY1SE@                  8');
+ writeln('8                                                         1SE@                 8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                      BILL JOBS               8');     
+ writeln('8                                                                              8');      
+ writeln('8                                                                              8'); 
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');     
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                                                                              8');
+ writeln('8                            PRESSIONE QUALQUER TECLA..                        8');
+ writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');		 
+ readkey;
+ end;	 
 	 
 	  clrscr;	  
 	  repeat
 	  level:=5;
-contvida:=0;    
+ contvida:=0;    
   // Pergunta INFORMATICA 1
    // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: PI DE OITO ');
     writeln('');
     writeln('OPONENTE = Bill Jobs  - Mil HP = 100 ');
     // CAMPO DE PERGUNTAS
-    writeln('I) Quem foi o criador da primeira calculadora analÌtica? ');
+    writeln('I) Quem foi o criador da primeira calculadora anal√≠tica? ');
     writeln('');
     writeln('1)Blaise Pascal');
     writeln('2)Charles Babbage ');
     writeln('3)Steve Jobs ');
-    writeln('4)Johnny C·lculo');
+    writeln('4)Johnny C√°lculo');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -1684,71 +1809,78 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -30 DE HP');
-		    life:=life-30
+		    life:=life-30;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	 // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	 // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 						begin						
 							life:=life+50;
-							writeln('VOC  USOU O POK…MON PI DE OITO!');
-							writeln('VOC  USOU UM HP DE +50');
+							writeln('VOC√ä USOU O POK√âMON PI DE OITO!');
+							writeln('VOC√ä USOU UM HP DE +50');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  N√O PODE USAR MAIS NENHUM POK…MON ,SORRY :) !');
+								writeln('VOC√ä N√ÉO PODE USAR MAIS NENHUM POK√âMON ,SORRY :) !');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		  // ATRIBUI«√O DE VALORES
+		  // ATRIBUI√á√ÉO DE VALORES
 		      verif:='F';
 		      
-// Pergunta INFORMATICA 2
+ // Pergunta INFORMATICA 2
    // USO DO ENQUANTO PARA VERIFICADOR=FALSO E VIDA MAIOR QUE 0  
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: PI DE OITO ');
     writeln('');
     writeln('OPONENTE = Bill Jobs  - Mil HP = 70 ');
     // CAMPO DE PERGUNTAS
-    writeln('II) Qual o nome do Primeiro vÌrus de Computador ');
+    writeln('II) Qual o nome do Primeiro v√≠rus de Computador ');
     writeln('');
     writeln('1)The Creeper');
     writeln('2)I Love You');
@@ -1762,57 +1894,64 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='1' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='2') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -30 DE HP');
-		    life:=life-30
+		    life:=life-30;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	 // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	 // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 						begin						
 							life:=life+50;
-							writeln('VOC  USOU O POK…MON PI DE OITO!');
-							writeln('VOC  USOU UM HP DE +50');
+							writeln('VOC√ä USOU O POK√âMON PI DE OITO!');
+							writeln('VOC√ä USOU UM HP DE +50');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  N√O PODE USAR MAIS NENHUM POK…MON ,SORRY :) !');
+								writeln('VOC√ä N√ÉO PODE USAR MAIS NENHUM POK√âMON ,SORRY :) !');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-			// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+			// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		     textcolor(white);
-		  // ATRIBUI«√O DE VALORES
+		  // ATRIBUI√á√ÉO DE VALORES
 		      verif:='F';
 		      
 		  // Pergunta INFORMATICA 3
@@ -1820,13 +1959,13 @@ contvida:=0;
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: PI DE OITO ');
     writeln('');
     writeln('OPONENTE = Bill Jobs  - Mil HP = 40 ');
     // CAMPO DE PERGUNTAS
-    writeln('III) Qual dos perifÈricos abaixo È um perifÈrico de entrada de dados? ');
+    writeln('III) Qual dos perif√©ricos abaixo √© um perif√©rico de entrada de dados? ');
     writeln('');
     writeln('1)Datashow.');
     writeln('2)Teclado.');
@@ -1840,59 +1979,66 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
+		 // Validade do Verificador
 		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100;
 		 writeln('BILL JOBS USOU O MIL PARA GANHAR +50 DE HP');
 		 writeln('');
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -30 DE HP');
-		    life:=life-30
+		    life:=life-30;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	 // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	 // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 						begin						
 							life:=life+50;
-							writeln('VOC  USOU O POK…MON PI DE OITO!');
-							writeln('VOC  USOU UM HP DE +50');
+							writeln('VOC√ä USOU O POK√âMON PI DE OITO!');
+							writeln('VOC√ä USOU UM HP DE +50');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  N√O PODE USAR MAIS NENHUM POK…MON ,SORRY :) !');
+								writeln('VOC√ä N√ÉO PODE USAR MAIS NENHUM POK√âMON ,SORRY :) !');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		  // ATRIBUI«√O DE VALORES
+		  // ATRIBUI√á√ÉO DE VALORES
 		      verif:='F';
 		      
 	// Pergunta INFORMATICA 4
@@ -1900,26 +2046,26 @@ contvida:=0;
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: PI DE OITO ');
     writeln('');
     writeln('OPONENTE = Bill Jobs  - Mil HP = 60 ');
     // CAMPO DE PERGUNTAS
-    writeln('IV) O que È um Sistema de InformaÁ„o?');
+    writeln('IV) O que √© um Sistema de Informa√ß√£o?');
     writeln('');
-    writeln('1)Sistema de informaÁ„o È um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
-    writeln('apresentar entrada de produto de informaÁ„o ˙teis ao usu·rio final..');
+    writeln('1)Sistema de informa√ß√£o √© um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
+    writeln('apresentar entrada de produto de informa√ß√£o √∫teis ao usu√°rio final..');
     writeln('');
-    writeln('2)Sistema de informaÁ„o È um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
-    writeln('apresentar saÌda de produto de informaÁ„o ˙teis ao usu·rio final..');
+    writeln('2)Sistema de informa√ß√£o √© um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
+    writeln('apresentar sa√≠da de produto de informa√ß√£o √∫teis ao usu√°rio final..');
     writeln('');
-    writeln('3)Sistema de informaÁ„o È um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
-    writeln('apresentar o valor do produto de informaÁ„o ˙teis ao usu·rio final..');
+    writeln('3)Sistema de informa√ß√£o √© um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
+    writeln('apresentar o valor do produto de informa√ß√£o √∫teis ao usu√°rio final..');
     writeln('');
-    writeln('4)Sistema de informaÁ„o È um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
-    writeln('apresentar entrada de produto de informaÁ„o ˙teis ao usu·rio prim·tio..');
-//ENTRADA DE DADOS
+    writeln('4)Sistema de informa√ß√£o √© um conjunto de componentes(entrada de recursos de dados,processamento) que tem como objetivo');
+    writeln('apresentar entrada de produto de informa√ß√£o √∫teis ao usu√°rio prim√°tio..');
+ //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
        textcolor(lightgreen);
@@ -1927,57 +2073,64 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -30 DE HP');
-		    life:=life-30
+		    life:=life-30;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	 // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	 // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 						begin						
 							life:=life+50;
-							writeln('VOC  USOU O POK…MON PI DE OITO!');
-							writeln('VOC  USOU UM HP DE +50');
+							writeln('VOC√ä USOU O POK√âMON PI DE OITO!');
+							writeln('VOC√ä USOU UM HP DE +50');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  N√O PODE USAR MAIS NENHUM POK…MON ,SORRY :) !');
+								writeln('VOC√ä N√ÉO PODE USAR MAIS NENHUM POK√âMON ,SORRY :) !');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		    textcolor(white);
-		  // ATRIBUI«√O DE VALORES
+		  // ATRIBUI√á√ÉO DE VALORES
 		      verif:='F';
 		      
 	// Pergunta INFORMATICA 5
@@ -1985,18 +2138,18 @@ contvida:=0;
     while (verif<>'V') and (vida>0) and (contvida=0) do
   Begin
   textcolor(white);
-    //CabeÁalho
-    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida);
+    //Cabe√ßalho
+    writeln('TREINADOR = ',nome,' HP: ',life,' VIDAS: ',vida,' PONTUA√á√ÉO: ',pont);
     writeln('POKEMONS DISPONIVEIS: PI DE OITO ');
     writeln('');
     writeln('OPONENTE = Bill Jobs  - Mil HP = 30 ');
     // CAMPO DE PERGUNTAS
     writeln('V) Qual a ordem correta das camadas? ');
     writeln('');
-    writeln('1)Sess„o, apresentaÁ„o, fÌsica, enlace, rede, transporte e aplicaÁ„o.');
-    writeln('2)ApresentaÁ„o, aplicaÁ„o, sess„o, rede, transporte, enlace e fÌsica.');
-    writeln('3)AplicaÁ„o, apresentaÁ„o, sess„o, transporte, rede, enlace e fÌsica.');
-    writeln('4)FÌsica, Enlace, Rede, Transporte, Sess„o, ApresentaÁ„o e AplicaÁ„o.');
+    writeln('1)Sess√£o, apresenta√ß√£o, f√≠sica, enlace, rede, transporte e aplica√ß√£o.');
+    writeln('2)Apresenta√ß√£o, aplica√ß√£o, sess√£o, rede, transporte, enlace e f√≠sica.');
+    writeln('3)Aplica√ß√£o, apresenta√ß√£o, sess√£o, transporte, rede, enlace e f√≠sica.');
+    writeln('4)F√≠sica, Enlace, Rede, Transporte, Sess√£o, Apresenta√ß√£o e Aplica√ß√£o.');
     //ENTRADA DE DADOS
     write('RESPOSTA = ');
     read(resp);
@@ -2005,64 +2158,75 @@ contvida:=0;
     // USO DO SE CASO RESPOSTA SEJA CORRETA
     if resp='2' then
 		 begin
-		 verif:='V'
+		 // Validade do Verificador
+		 verif:='V';
+		 // Contador de Pontua√ß√£o
+		 pont:= pont+100
 		 end
-		 // SEN√O-SE PARA RESPOSTA ERRADA
+		 // SEN√ÉO-SE PARA RESPOSTA ERRADA
 			else
 				if (resp='1') or (resp='3') or (resp='4') then
 				begin
-				// MEC‚NICA PARA SUBTRA«√O DO HP
+				// MEC√¢NICA PARA SUBTRA√á√ÉO DO HP
 				writeln('RESPOSTA ERRADA: -30 DE HP');
-		    life:=life-30
+		    life:=life-30;
+		    // Contador de Pontua√ß√£o
+		    pont:= pont-50
 		    end
-		    	 // SEN√O-SE PARA USO DO SUPORTE POK…MON
+		    	 // SEN√ÉO-SE PARA USO DO SUPORTE POK√âMON
 		    	else
 		       if (resp='P') or (resp='p') then
 						if (cont=0) then
 						begin						
 							life:=life+50;
-							writeln('VOC  USOU O POK…MON PI DE OITO!');
-							writeln('VOC  USOU UM HP DE +50');
+							writeln('VOC√ä USOU O POK√âMON PI DE OITO!');
+							writeln('VOC√ä USOU UM HP DE +50');
 							writeln('');
 							cont:=cont+1 ;
+							pok:=1;
 							end
 							
-							// SEN√O-SE PARA POK…MON J¡ USADO ANTERIORMENTE
+							// SEN√ÉO-SE PARA POK√âMON J√Å USADO ANTERIORMENTE
 							else
 								if (resp='P') or (resp='p') then
 					      	if (cont=1) then
 								begin
-								writeln('VOC  N√O PODE USAR MAIS NENHUM POK…MON ,SORRY :) !');
+								writeln('VOC√ä N√ÉO PODE USAR MAIS NENHUM POK√âMON ,SORRY :) !');
 								writeln('')
 								end
-								// SEN√O PARA RESPOSTA INV¡LIDA
+								// SEN√ÉO PARA RESPOSTA INV√ÅLIDA
 							  	else
 									begin
-									writeln('RESPOSTA INV¡LIDA');
+									writeln('RESPOSTA INV√ÅLIDA');
 									writeln(''); 
 									end;
 									
-		// MEC¬NICA COM SE PARA SUBTRA«√O DE VIDA
+		// MEC√ÇNICA COM SE PARA SUBTRA√á√ÉO DE VIDA
     if (life<=0) then
     begin
       life:=100 ;
-      writeln('VOC  TER¡ QUE REINICIAR O GIN¡SIO!');
-        writeln('VOC  PERDEU UMA VIDA, TENHA CUIDADO...');
+      writeln('VOC√ä TER√Å QUE REINICIAR O GIN√ÅSIO!');
+        writeln('VOC√ä PERDEU UMA VIDA, TENHA CUIDADO...');
         writeln('');
+        //Atribui√ß√£o de Valores
         verif:='V';
         contvida:=1;
       vida:=vida-1;
     end;
 		  end;
 		  
-		  // ATRIBUI«√O DE VALORES
+		  // ATRIBUI√á√ÉO DE VALORES
 		      verif:='F';
 		      cont:=0;
 	  until contvida=0; 
 	    textcolor(white);
-end;
-begin
-JOGO;	    
+  end;
+
+  // PROGRAMA PRINCIPAL
+  begin
+  // Chamada do Procedimento JOGO
+  JOGO;
+  // Uso do se caso n√£o reste nenhuma vida.	    
 	  if vida=0 then
   begin
     clrscr;
@@ -2072,24 +2236,28 @@ JOGO;
     writeln(' | |_| |/ ___ \| |  | | |___  | |_| |\ V / | |___|  _ <    _  | |    ');
     writeln('  \____/_/   \_\_|  |_|_____|  \___/  \_/  |_____|_| \_\  (_) | |    ');
     writeln('                                                               \_\   ');
-    case level of
-    1:writeln('PROF PASQUALE = N„o desista, vocÍ sÛ est· comeÁando!');
-    2:writeln('PROF VALTINHO BRANCO = NEst· na hora de revisar seus estudos.');
-    3:writeln('PROF DUMB BULLDOG = Lamento, mas parece que vocÍ pulou algumas p·ginas do seu livro de histÛria.');
-    4:writeln('PROF PEL…ZINHO  = Aaaaah, eu sabia que vocÍ n„o estava pronto!');
-    5:writeln('PROF BILL JOBS = VocÍ n„o vai desistir agora, vai? Eu sinceramente ficaria decepcionado.');
+    // Uso do caso para mensagem de acordo com o level em que o usu√°rio perdeu
+		case level of
+    1:writeln('PROF PASQUALE = N√£o desista, voc√™ s√≥ est√° come√ßando!');
+    2:writeln('PROF VALTINHO BRANCO = NEst√° na hora de revisar seus estudos.');
+    3:writeln('PROF DUMB BULLDOG = Lamento, mas parece que voc√™ pulou algumas p√°ginas do seu livro de hist√≥ria.');
+    4:writeln('PROF PEL√âZINHO  = Aaaaah, eu sabia que voc√™ n√£o estava pronto!');
+    5:writeln('PROF BILL JOBS = Voc√™ n√£o vai desistir agora, vai? Eu sinceramente ficaria decepcionado.');
 		END;
+		// Op√ß√£o de Reiniciar o Jogo
 		writeln('');
 		writeln('               VC DESEJA REINICIAR O JOGO? S/N?        ');
 		read(reiniciar);
+		// Se reiniciar for SIM, chama novamente o procedimento JOGO
 		if (reiniciar ='S') or (reiniciar ='s') then
 		JOGO
-		else
+		// Sen√£o, encerra o jogo
+			else
   end
   
-// SEN√O PARA SE USU¡RIO CONSEGUIU FINALIZAR O JOGO  
+// SEN√ÉO PARA SE USU√ÅRIO CONSEGUIU FINALIZAR O JOGO  
   else
-  begin
+	begin
     clrscr;
     writeln('');
     writeln('');
@@ -2101,117 +2269,196 @@ JOGO;
     writeln('	   | || |_| | |_| |   \ V  V /    | |  | |\  | |_| ');
     writeln('	   |_| \___/ \___/     \_/\_/    |___| |_| \_| (_) ');
     writeln('-----------------------------------------------------------------------');
-    writeln('      Bill Jobs : E-Eu n„o acredito! VocÍ me derrotou!................. ');
-    writeln('      Bem... SÛ me resta dar-lhe os parabÈns, campe„o.');
-    writeln('      VocÍ finalizou o Quiz GO!, e como prÍmio, eu lhe');
-    writeln('      darei meu pokÈmon mais raro, Mil. ');
+    writeln('      Bill Jobs : E-Eu n√£o acredito! Voc√™ me derrotou!................. ');
+    writeln('      Bem... S√≥ me resta dar-lhe os parab√©ns, campe√£o.');
+    writeln('      Voc√™ finalizou o Quiz GO!, e como pr√™mio, eu lhe');
+    writeln('      darei meu pok√©mon mais raro, Mil. ');
     writeln('');
   writeln('      WE ARE THE CHAMPIONS, MY FRIEND.....');
   writeln('');
-  writeln('      PARAB…NS,');
+  writeln('      PARAB√âNS,');
   writeln('');
-  writeln('      VOC  ACABA DE CONQUISTAR A LIGA QUIZ GO!!!');
-  writeln('      A JORNADA N√O FOI F¡CIL, MAS VOC  FOI RECOMPENSADO!');
+  writeln('      VOC√ä ACABA DE CONQUISTAR A LIGA QUIZ GO!!!');
+  writeln('      A JORNADA N√ÉO FOI F√ÅCIL, MAS VOC√ä FOI RECOMPENSADO!');
   writeln('');
+  textcolor(lightgreen);
+  writeln('                  SUA PONTUA√á√ÉO TOTAL FOI: ',pont);
   writeln('');
+  // Uso do se caso pontua√ß√£o seja a m√°xima
+  if pont=1900 then
+  begin
+  writeln('            VOC√ä CONQUISTOU A PONTUA√á√ÉO M√ÅXIMA!! \O\ /O/ ');
+  end;
+  end;
+  // Uso do se caso n√£o necessite de Pok√©mons
+  if pok=0 then
+  begin
+  writeln('              VOC√ä ZEROU O JOGO SEM NENHUMA AJUDA!!! ');
+  end;
+  // B√¥nus para Usu√°rio caso n√£o use nenhuma ajuda, e pontua√ß√£o seja m√°xima.
+  if (pok=0) and (pont=1900) then
+  begin
+  writeln('      POR ESSA DOUBLE MITAGEM, VOC√ä GANHOU O PR√äMIO SECRETO: ');
+  writeln('');
+  end;
+  textcolor(white);
   writeln('     \O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/\O/ ');
   writeln('           PRESSIONE ALGUMA TECLA PARA CONTINUAR          ');
   READKEY;
 
+   // B√¥nus para Usu√°rio caso n√£o use nenhuma ajuda, e pontua√ß√£o seja m√°xima.  
+  if (pok=0) and (pont=1900) then 
+  begin 
+  clrscr;
+  writeln('                      VOC√ä GANHOU O MARIO E O YOSHI!! ');
+  writeln(' PARA SABERMOS QUE VOC√ä GANHOU, LEVANTE E GRITE: "EU ACHEI O JUBILEU!" ');  
+  writeln('                                      ########                   ');
+  writeln('                               ####CCCCCC//##                    ');
+  writeln('                             ##CCCCtttt//  ##                     ');
+  writeln('                           ##CCttttttCCCC@@@@@@@@                  ');
+  writeln('                           ##CCttttttCCCC@@@@@@@@                  ');
+  writeln('                         ##CCttttttCC@@@@@@@@@@@@@@                ');
+  writeln('                       ##CCttttttCC@@@@@@@@@@@@                     ');
+  writeln('                     ##CCttttttCC@@@@@@              @@@             ');
+  writeln('                     ##CCtt^^^^@@@@@@((  @@        @@OOK@@            ');
+  writeln('                   ##CCtttt((OO^^@@@@((  @@^^^^^^OOSSKK                 ');
+  writeln('                   ##CCCC##((OO^^@@@@@@^^^^^^^^^^OOKK   @@                 ');
+  writeln('                   ##CCCC##((OO^^@@@@@@^^^^^^^^^^OOKK   @@                   ');
+  writeln('                   ##CC##@@((((^^^^@@^^^^@@((((((OO     @@  @@@@@@           ');
+  writeln('                     ##@@@@@@@@@@((^^^^@@@@@@@@@@@@       @@OOOOOO@@@@       ');
+  writeln('                       @@@@@@@@@@((((((^^@@@@@@%%@@KK   KKOOOOOO    OO@@      ');
+  writeln('                         @@@@@@@@@@@@((((^^OOOOOO@@SSKKKOOOOOOOOOO@@  @@      ');
+  writeln('###################    ####GGGG######33##OO      OOSSSSOOOOOOOOOOOOOOOOO@@   ');
+  writeln('###################    ####GGGG######33##OO      OOSSSSOOOOOOOOOOOOOOOOO@@   ');
+  writeln('##(((((((((((((((((####OOOO####CCtttt####OO      OOSSOOOOOOOSSOOOOOOOOOO@@   ');
+  writeln('####((((((((((((###OOOO####33##CCttttttttttOO    OOSSOOOOO  @@SSOOOOOOOO@@    ');
+  writeln('  ####((((((####OOOOO##////33##CCCCttttttttttOOOO@@SSOOOOO  @@SSOOOOOOOO@@   ');
+  writeln('    ########OOOOOO###33//////33##CCCCttttttCC##%%@@SSOOO  @@@@KKSSOOOOSS@@   ');
+  writeln('      ############ GGGGGGGGGG//33####CCCCCC##@@@@@@SS         @@KKSSSS@@     ');
+  writeln('                   GG33////GG//////33######@@%%@@KKSS   @@      @@@@@@      ');
+  writeln('                   GG33////GG//////33######@@%%@@KKSS   @@      @@@@@@      ');
+  writeln('                   GGGG3333GG////////////GG^^@@@@SSSS  @  @@@@@@           ');
+  writeln('                     GGGGGG3333333333//////GG@@KKSS  @@                    ');
+  writeln('                       GGGG333333333333////GG@@SSOO  @@                    ');
+  writeln('                       @@SSGGGGGG33333333//GG@@SSOO  @@                     ');
+  writeln('                         @@SS@@  GG33333333@@@@@@    @@                    ');
+  writeln('                         @@SS@@  GG33333333@@@@@@    @@                     ');
+  writeln('                         @@SS@@    @@GGGGGGOO//@@  @@                      ');
+  writeln('                         @@  SS@@@@@@OOOOOO@@@@OO  @@                      ');
+  writeln('                           @@  SSSS@@@@@@@@@@      @@                      ');
+  writeln('                           @@        @@%%@@      @@                        ');
+  writeln('                             @@    @@%%%%%%@@    @@                       ');
+  writeln('                             @@    @@%%%%%%@@    @@                        ');
+  writeln('                            @@  @@@@%%%%%%@@  @@                          ');
+  writeln('                               @@@@  @@@@@@  @@                            ');
+  writeln('                                 @@@@@@@@@@@@                              ');
+  writeln('                               @@GGGGGGGGGG@@                              ');
+  writeln('                               @@GGGGGGGGGG  @@                            ');
+  writeln('                               @@GGGGGGGGGGGG@@                            ');
+  writeln('                               @@GGGGGGGGGGGG@@                          ');
+  writeln('                               @@@@@@@@@@@@@@@@                          ');
+  writeln('                        PRESSIONE ALGUMA TECLA PARA CONTINUAR...         ');
+  readkey;
+  end;
 
-clrscr;
-writeln(' TURMA 52837 - 2016.2 ');
-writeln('     PARTICIPANTES');
-WRITELN('');
-writeln('         CAROL SENA');
-writeln('     (  )   (   )  ) ');
-writeln('      ) (   )  (  (   ');
-writeln('      ( )  (    ) )   ');
-writeln('      _____________    ');
-writeln('     <_____________> ___   ');
-writeln('     |             |/ _ \   ');
-writeln('     |               | | |   ');
-writeln('     |               |_| |   ');
-writeln('  ___|             |\___/    ');
-writeln(' /    \___________/    \     ');
-writeln(' \_____________________/     ');
-writeln('PRESSIONE ALGUMA TECLA..');
-readkey;
 
-clrscr;
-writeln('                        JANDERSON NASCIMENTO      ');
-writeln('                 __________________________________          ');
-writeln('                /                | /   \    |   _  \         ');
-writeln('               |   (-----|  |----`/  ^  \   |  |_)  |        ');
-writeln('                 \   \    |  |    /  /_\  \  |      /        ');
-writeln('            .-----)   |   |  |   /  _____  \ |  |\  \-------. ');
-writeln('            |________/    |__|  /__/     \__\| _| `.________| ');
-writeln('             ____    __    ____  ___     .______    ________.');
-writeln('             \   \  /  \  /   / /   \    |   _  \  /        | ');
-writeln('              \   \/    \/   / /  ^  \   |  |_)  ||   (-----` ');
-writeln('               \            / /  /_\  \  |      /  \   \ ');
-writeln('                \    /\    / /  _____  \ |  |\  \---)   | ');
-writeln('                 \__/  \__/ /__/     \__\|__| `._______/  ');
-writeln('PRESSIONE ALGUMA TECLA..');
-readkey;
+ // CR√âDITOS
+ // USO DO SE CASO VIDA FOR MAIOR QUE 0
+ if vida>0 then
+ clrscr;
+ writeln(' TURMA 52837 - 2016.2 ');
+ writeln('     PARTICIPANTES');
+ WRITELN('');
+ writeln('         CAROL SENA');
+ writeln('     (  )   (   )  ) ');
+ writeln('      ) (   )  (  (   ');
+ writeln('      ( )  (    ) )   ');
+ writeln('      _____________    ');
+ writeln('     <_____________> ___   ');
+ writeln('     |             |/ _ \   ');
+ writeln('     |               | | |   ');
+ writeln('     |               |_| |   ');
+ writeln('  ___|             |\___/    ');
+ writeln(' /    \___________/    \     ');
+ writeln(' \_____________________/     ');
+ writeln('PRESSIONE ALGUMA TECLA..');
+ readkey;
+
+ clrscr;
+ writeln('                        JANDERSON NASCIMENTO      ');
+ writeln('                 __________________________________          ');
+ writeln('                /                | /   \    |   _  \         ');
+ writeln('               |   (-----|  |----`/  ^  \   |  |_)  |        ');
+ writeln('                 \   \    |  |    /  /_\  \  |      /        ');
+ writeln('            .-----)   |   |  |   /  _____  \ |  |\  \-------. ');
+ writeln('            |________/    |__|  /__/     \__\| _| `.________| ');
+ writeln('             ____    __    ____  ___     .______    ________.');
+ writeln('             \   \  /  \  /   / /   \    |   _  \  /        | ');
+ writeln('              \   \/    \/   / /  ^  \   |  |_)  ||   (-----` ');
+ writeln('               \            / /  /_\  \  |      /  \   \ ');
+ writeln('                \    /\    / /  _____  \ |  |\  \---)   | ');
+ writeln('                 \__/  \__/ /__/     \__\|__| `._______/  ');
+ writeln('PRESSIONE ALGUMA TECLA..');
+ readkey;
 
 
-clrscr;
-writeln('                  KARINE MARIA');
-writeln('      (    ');
-writeln('       \    ');
-writeln('        )   ');
-writeln(' ##------------->        (  * )'); 
-writeln('        )   ');
-writeln('       /   '); 
-writeln('      (      ');
-writeln('PRESSIONE ALGUMA TECLA..');
-readkey;
+ clrscr;
+ writeln('                  KARINE MARIA');
+ writeln('      (    ');
+ writeln('       \    ');
+ writeln('        )   ');
+ writeln(' ##------------->        (  * )'); 
+ writeln('        )   ');
+ writeln('       /   '); 
+ writeln('      (      ');
+ writeln('PRESSIONE ALGUMA TECLA..');
+ readkey;
 
-clrscr;
-writeln('                  KEVIN ALMEIDA             ');
-writeln('       _==/          i     i          \==_  ');
-writeln('     /XX/            |\___/|            \XX\ ');
-writeln('   /XXXX\            |XXXXX|            /XXXX\');
-writeln('  |XXXXXX\_         _XXXXXXX_         _/XXXXXX|');
-writeln(' XXXXXXXXXXXxxxxxxxXXXXXXXXXXXxxxxxxxXXXXXXXXXXX ');
-writeln('|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX| ');
-writeln('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ');
-writeln('|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|');
-writeln(' XXXXXX/^^^^"\XXXXXXXXXXXXXXXXXXXXX/^^^^^\XXXXXX ');
-writeln('  |XXX|       \XXX/^^\XXXXX/^^\XXX/       |XXX|');
-writeln('    \XX\       \X/    \XXX/    \X/       /XX/ ');
-writeln('       "\       "      \X/      "      /"   ');
-writeln('PRESSIONE ALGUMA TECLA..');
-readkey;
+ clrscr;
+ writeln('                  KEVIN ALMEIDA             ');
+ writeln('       _==/          i     i          \==_  ');
+ writeln('     /XX/            |\___/|            \XX\ ');
+ writeln('   /XXXX\            |XXXXX|            /XXXX\');
+ writeln('  |XXXXXX\_         _XXXXXXX_         _/XXXXXX|');
+ writeln(' XXXXXXXXXXXxxxxxxxXXXXXXXXXXXxxxxxxxXXXXXXXXXXX ');
+ writeln('|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX| ');
+ writeln('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ');
+ writeln('|XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|');
+ writeln(' XXXXXX/^^^^"\XXXXXXXXXXXXXXXXXXXXX/^^^^^\XXXXXX ');
+ writeln('  |XXX|       \XXX/^^\XXXXX/^^\XXX/       |XXX|');
+ writeln('    \XX\       \X/    \XXX/    \X/       /XX/ ');
+ writeln('       "\       "      \X/      "      /"   ');
+ writeln('PRESSIONE ALGUMA TECLA..');
+ readkey;
 
-clrscr;
+ clrscr;
 
-writeln('... E NOSSO PRINCIPAL PARTICIPANTE...');
-writeln('           VOC  ',nome,' !!! ');
-writeln('           ___________    ____      ');                                     
-writeln('     ______/   \__//   \__/____\     ');                        
-writeln('   _/   \_/  :           //____\\    ');                         
-writeln('  /|      :  :  ..      /        \   ');                      
-writeln(' | |     ::     ::      \        /   ');                          
-writeln(' | |     :|     ||     \ \______/    ');                           
-writeln(' | |     ||     ||      |\  /  |    ');                                 
-writeln('  \|     ||     ||      |   / | \    '); 
-writeln('   |     ||     ||      |  / /_\ \   ');
-writeln('   | ___ || ___ ||      | /  /    \  ');  
-writeln('    \_-_/  \_-_/ | ____ |/__/      \  '); 
-writeln('                 _\_--_/    \      / ');  
-writeln('                /____             / '); 
-writeln('               /     \           /  ');  
-writeln('               \______\_________/  ');
-writeln('PRESSIONE ALGUMA TECLA..');
-readkey;
+ writeln('... E NOSSO PRINCIPAL PARTICIPANTE...');
+ writeln('           VOC√ä ',nome,' !!! ');
+ writeln('           ___________    ____      ');                                     
+ writeln('     ______/   \__//   \__/____\     ');                        
+ writeln('   _/   \_/  :           //____\\    ');                         
+ writeln('  /|      :  :  ..      /        \   ');                      
+ writeln(' | |     ::     ::      \        /   ');                          
+ writeln(' | |     :|     ||     \ \______/    ');                           
+ writeln(' | |     ||     ||      |\  /  |    ');                                 
+ writeln('  \|     ||     ||      |   / | \    '); 
+ writeln('   |     ||     ||      |  / /_\ \   ');
+ writeln('   | ___ || ___ ||      | /  /    \  ');  
+ writeln('    \_-_/  \_-_/ | ____ |/__/      \  '); 
+ writeln('                 _\_--_/    \      / ');  
+ writeln('                /____             / '); 
+ writeln('               /     \           /  ');  
+ writeln('               \______\_________/  ');
+ writeln('PRESSIONE ALGUMA TECLA..');
+ readkey;
+ 
+ clrscr;
 
-clrscr;
-
+// Finaliza√ß√£o
 textcolor(lightgreen);                                                                                                                                                                
 writeln('                                                         PRESSIONE ALGUMA TECLA PARA FECHAR  ');                                                                                                                                                                 
-writeln('                                                     OBRIGADO POR JOGAR :D!!! AT… O PR”XIMO SEMESTRE!!                                           ');                          
+writeln('                                                     OBRIGADO POR JOGAR :D!!! AT√â O PR√ìXIMO SEMESTRE!!                                           ');                          
 writeln('                                                                                                                                                  ');                             
 writeln('                                                                                                                                `    .i*         ');                                  
 writeln('                                                                                                                              `*x+i#xWWW.        ');                                      
@@ -2324,7 +2571,7 @@ writeln('                                           `:##*:`                     
 writeln('');
 writeln('                                               MAXIMIZE A TELA :)');
 readkey;                                                                                                                                                      
-end;                                                                                                                                                      
+                                                                                                                                                      
                                                                                                                                                       
                                                                                                                                                       
                                                                                                                                                       
