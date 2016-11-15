@@ -2255,10 +2255,12 @@ pont:=0;
 			else
   end
   
-// SENÃO PARA SE USUÁRIO CONSEGUIU FINALIZAR O JOGO  
-  else
+// SENÃO PARA SE USUÁRIO CONSEGUIU FINALIZAR O JOGO 
+
+  else 
 	begin
     clrscr;
+    gotoxy(0,25);
     writeln('');
     writeln('');
     writeln('');
@@ -2273,6 +2275,8 @@ pont:=0;
     writeln('      Bem... Só me resta dar-lhe os parabéns, campeão.');
     writeln('      Você finalizou o Quiz GO!, e como prêmio, eu lhe');
     writeln('      darei meu pokémon mais raro, Mil. ');
+    writeln('');
+    writeln(     'Graças a você, a população dos Archens será reconstruída!!');
     writeln('');
   writeln('      WE ARE THE CHAMPIONS, MY FRIEND.....');
   writeln('');
@@ -2366,8 +2370,8 @@ pont:=0;
  // USO DO SE CASO VIDA FOR MAIOR QUE 0
  if vida>0 then
  clrscr;
- writeln(' TURMA 52837 - 2016.2 ');
- writeln('     PARTICIPANTES');
+ writeln('   TURMA 52837 - 2016.2 ');
+ writeln('      PARTICIPANTES');
  WRITELN('');
  writeln('         CAROL SENA');
  writeln('     (  )   (   )  ) ');
@@ -2385,10 +2389,12 @@ pont:=0;
  readkey;
 
  clrscr;
+
+ textcolor(yellow);
  writeln('                        JANDERSON NASCIMENTO      ');
- writeln('                 __________________________________          ');
- writeln('                /                | /   \    |   _  \         ');
- writeln('               |   (-----|  |----`/  ^  \   |  |_)  |        ');
+ writeln('                  __________________________________          ');
+ writeln('                 /                | /   \    |   _  \         ');
+ writeln('                |   (-----|  |----`/  ^  \   |  |_)  |        ');
  writeln('                 \   \    |  |    /  /_\  \  |      /        ');
  writeln('            .-----)   |   |  |   /  _____  \ |  |\  \-------. ');
  writeln('            |________/    |__|  /__/     \__\| _| `.________| ');
@@ -2403,6 +2409,8 @@ pont:=0;
 
 
  clrscr;
+
+ textcolor(lightgreen);
  writeln('                  KARINE MARIA');
  writeln('      (    ');
  writeln('       \    ');
@@ -2415,6 +2423,8 @@ pont:=0;
  readkey;
 
  clrscr;
+
+ textcolor(yellow);
  writeln('                  KEVIN ALMEIDA             ');
  writeln('       _==/          i     i          \==_  ');
  writeln('     /XX/            |\___/|            \XX\ ');
@@ -2433,8 +2443,11 @@ pont:=0;
 
  clrscr;
 
+ textcolor(white);
  writeln('... E NOSSO PRINCIPAL PARTICIPANTE...');
+ textcolor(lightgreen);
  writeln('           VOCÊ ',nome,' !!! ');
+ textcolor(white);
  writeln('           ___________    ____      ');                                     
  writeln('     ______/   \__//   \__/____\     ');                        
  writeln('   _/   \_/  :           //____\\    ');                         
@@ -2456,6 +2469,7 @@ pont:=0;
  clrscr;
 
 // Finalização
+
 textcolor(lightgreen);                                                                                                                                                                
 writeln('                                                         PRESSIONE ALGUMA TECLA PARA FECHAR  ');                                                                                                                                                                 
 writeln('                                                     OBRIGADO POR JOGAR :D!!! ATÉ O PRÓXIMO SEMESTRE!!                                           ');                          
