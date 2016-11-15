@@ -7,6 +7,7 @@ cont :integer;  // Contador para Uso ou não das Ajuda dos Pokémons.
 pok :integer; // Contador para Qtd. de Uso dos Pokémons.
 level :integer;  // Distribuidor de level para identificar o caso no GAME OVER .
 pont:integer; // Contador de Pontuação.
+resto:integer; // Resto da Pontuação caso perca vida, e ela seja menor que 500
 
 nome:string[20]; // Cadeia de Caracteres para Inserção do Nome .
 verif:string[10]; // Cadeia de Caracteres para Verificação da Disponibilidade da Pergunta.
@@ -27,7 +28,6 @@ pont:=0;
   clrscr;
   textcolor(1);
   textcolor(12);
-  gotoxy(40,0);
   writeln('          --------_¦¦¦¦¦¦¦¦¦¦¦_--------'                   );
   writeln('          -----_¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_-----'                   );
   writeln('          ----¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦----'                   );
@@ -81,14 +81,15 @@ pont:=0;
  writeln('												');
  writeln('	1 - Cada GINÁSIO terá uma MATÉRIA, com uma série de PERGUNTAS para você responder.											');
  writeln('	2 - Por não ter pokebolas, você só pode usar UM pokémon por ginásio.											');
- writeln('	3 - O seu pokémon ganha HP (Pontos de vida) a cada ginásio superado, e perde a cada resposta errada.										'	);
- writeln('	4 - Se o seu HP chegar a zero, você perde UMA VIDA, e REINICIARÁ O GINÁSIO.										'	);
- writeln('	5 - Se você perder todas as 03 vidas, FIM DE JOGO.										'	);
- writeln('	6 - Seu objetivo final é derrotar os líderes de todos os ginásios,										'	);
- writeln('	7 - Se você acertar TODAS as perguntas, você obterá o pokémon mais raro de todos.									'		);
- writeln('	8 - Para usar seu Pokemon, basta digitar a Letra "P" no campo de respsta.											');
- writeln('	9- Todas as Perguntas contém 4 alternativas. Para responde-lás basta inserir ou numéro da mesma (1,2,3,ou 4).											');
- writeln('	10 - Leia atentamente todos os Dialógos, pois eles terão informações importantes para o seu jogo.										'	);
+ writeln('	3 - Você perde HP (Pontos de vida) a cada resposta errada.										'	);
+ writeln('	4 - Se o seu HP chegar a zero, você perde UMA VIDA , REINICIARÁ O GINÁSIO e perderá 500PTS.										'	);
+ writeln('	5 - Sua pontuação consiste no seguinte : A cada Resposta CERTA = +100PTS. A cada Resposta ERRADA = -50PTS.											'	);
+ writeln('	6 - Se você perder todas as 03 vidas, FIM DE JOGO.										'	);
+ writeln('	7 - Seu objetivo final é derrotar os líderes de todos os ginásios,										'	);
+ writeln('	8 - Se você acertar TODAS as perguntas, você obterá o pokémon mais raro de todos.									'		);
+ writeln('	9 - Para usar seu Pokemon, basta digitar a Letra "P" no campo de respsta.											');
+ writeln('	10- Todas as Perguntas contém 4 alternativas. Para responde-lás basta inserir o numéro da mesma (1,2,3,ou 4).											');
+ writeln('	11 - Leia atentamente todos os Dialógos, pois eles terão informações importantes para o seu jogo.										'	);
  writeln('	BOA SORTE!											');
  writeln('');
  // MODO PARA PASSAR PARA PROX. TELA
@@ -359,7 +360,10 @@ pont:=0;
 				writeln('');
 		    life:=life-10;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO PARA RESPOSTA INVÁLIDA
 						else
@@ -378,8 +382,21 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+      
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
-    
+
+			    
     // Mudança de Cores
 		textcolor(white);
   end;
@@ -427,7 +444,10 @@ pont:=0;
 				writeln('');
 		    life:=life-10 ;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO PARA RESPOSTA INVÁLIDA
 						else
@@ -446,6 +466,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
     textcolor(white);
   end;
@@ -492,7 +524,10 @@ pont:=0;
 				writeln('');
 		    life:=life-10;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO PARA RESPOSTA INVÁLIDA
 						else
@@ -511,6 +546,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
        textcolor(white);
   end;
@@ -520,7 +567,8 @@ pont:=0;
   
   until contvida=0; 
 
-  if vida>0 then 
+  // USO DO SE CASO VIDA MAIOR QUE 0
+	if vida>0 then 
   begin  
  clrscr;
     writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
@@ -535,7 +583,11 @@ pont:=0;
    writeln('8   A criaturinha robótica tira um momento de sua cuidadosa leitura,           8');
    writeln('8   para se apróximar de você e começar o combate.                             8');
    writeln('8                                                                              8');
-   writeln('8 ##SEU POKÉMON TEM A CAPACIDADE DE DAR DICAS EM 1 PERGUNTA NO PRÓX. GINÁSIO## 8');
+   write('8 ');
+   textcolor(lightgreen);
+   write('##SEU POKÉMON TEM A CAPACIDADE DE DAR DICAS EM 1 PERGUNTA NO PRÓX. GINÁSIO##');
+   textcolor(white);
+   writeln(' 8');
    writeln('8                           :uZ2@ZY       ,                                    8');
    writeln('8                          LU2.: 20@    .B@                                    8');
    writeln('8                         X1757ivB@B   iYB7                                    8');
@@ -638,7 +690,10 @@ pont:=0;
 				writeln('');
 		    life:=life-15;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -677,6 +732,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -722,7 +789,10 @@ pont:=0;
 				writeln('');
 		    life:=life-15;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	// SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -760,6 +830,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    //ATRIBUIÇÃO DE DADOS
@@ -805,7 +887,10 @@ pont:=0;
 				writeln('');
 		    life:=life-15;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	// SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -843,6 +928,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
         //ATRIBUIÇÃO DE DADOS
@@ -851,7 +948,8 @@ pont:=0;
  		    textcolor(white);  
  		until contvida=0; 
 
-  if vida>0 then 
+  	  // USO DO SE CASO VIDA MAIOR QUE 0
+	if vida>0 then 
   begin 		
 	 clrscr;  
 	 writeln('88888888888888888888888888888888888888888888888888888888888888888888888888888888');
@@ -868,7 +966,11 @@ pont:=0;
    writeln('8   com um bulbo de planta em suas costas,                                     8');
    writeln('8   vestido com um pequeno jaleco branco de cientista, pronto pra atacar       8');
    writeln('8                                                                              8');
-   writeln('8     ##SEU POKÉMON TEM A CAPACIDADE DE PULAR 1 PERGUNTA NO PRÓX. GINÁSIO##    8');
+    write('8 ');
+   textcolor(lightgreen);
+   write('   ## SEU POKÉMON TEM A CAPACIDADE DE PULAR 1 PERGUNTA NO PRÓX. GINÁSIO ##  ');
+   textcolor(white);
+   writeln(' 8');
    writeln('8                                                 .vZGu,                       8');
    writeln('8                                         iJX0NjL7LL2j@U                       8');
    writeln('8                                 iLr    7uNuvr7;77YLYBP                       8');
@@ -975,7 +1077,10 @@ pont:=0;
 				writeln('');
 		    life:=life-20;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1015,6 +1120,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -1061,7 +1178,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -20 DE HP');
 		    life:=life-20;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1101,6 +1221,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		      //ATRIBUIÇÃO DE DADOS		
@@ -1147,7 +1279,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -20 DE HP');
 		    life:=life-20;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	else
 						if (resp='P') or (resp='p') then
@@ -1186,6 +1321,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -1232,7 +1379,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -20 DE HP');
 		    life:=life-20;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	else
 						if (resp='P') or (resp='p') then
@@ -1271,6 +1421,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -1279,6 +1441,7 @@ pont:=0;
 		      cont:=0;
 	   until contvida=0; 
 	 
+	 	  // USO DO SE CASO VIDA MAIOR QUE 0
    if vida>0 then 
    begin
    clrscr;
@@ -1298,7 +1461,11 @@ pont:=0;
    writeln('8   fazendo a poeira voar por entre seus pés...                                8');
    writeln('8   Finalmente optando por disfarçar o medo... Você dá um passo a frente.      8');
    writeln('8                                                                              8');
-   writeln('8  ## SEU POKÉMON TEM A CAPACIDADE DE ANULAR 2 RESPOSTAS NO PRÓX. GINÁSIO ##   8');
+   write('8 ');
+   textcolor(lightgreen);
+   write(' ## SEU POKÉMON TEM A CAPACIDADE DE ANULAR 2 RESPOSTAS NO PRÓX. GINÁSIO ##  ');
+   textcolor(white);
+   writeln(' 8');
    writeln('8                                              7                               8');
    writeln('8                         .,   :               ii:.,..                         8');
    writeln('8                        iqBi ;OBrujrr:       ,5@BBM@B@MP7.                    8');
@@ -1401,7 +1568,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -25 DE HP');
 		    life:=life-25 ;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		     // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1441,6 +1611,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
         //ATRIBUIÇÃO DE DADOS
@@ -1485,7 +1667,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -25 DE HP');
 		    life:=life-25;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		     // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1525,6 +1710,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
         //ATRIBUIÇÃO DE DADOS
@@ -1568,7 +1765,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -25 DE HP');
 		    life:=life-25 ;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		     // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1608,6 +1808,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
         //ATRIBUIÇÃO DE DADOS
@@ -1651,7 +1863,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -25 DE HP');
 		    life:=life-25;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		     // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1691,6 +1906,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
         //ATRIBUIÇÃO DE DADOS
@@ -1699,7 +1926,7 @@ pont:=0;
 			textcolor(white);		
 	  until contvida=0; 
 	  
-	  
+	  // USO DO SE CASO VIDA MAIOR QUE 0
 	  if vida>0 then 
     begin 
    clrscr;
@@ -1719,7 +1946,11 @@ pont:=0;
    writeln('8   Mas enquanto o vôo da ave é rapido e turbulento,                           8');
    writeln('8   o pouso é delicado e calculado. Você se prepara para um árduo desafio.     8');
    writeln('8                                                                              8');
-   writeln('8    ## SEU POKÉMON TEM A CAPACIDADE DE DAR +50 DE HP NO PRÓX. GINÁSIO ##      8');
+   write('8 ');
+   textcolor(lightgreen);
+   write('      ## SEU POKÉMON TEM A CAPACIDADE DE LHE DAR +50 NO PRÓX. GINÁSIO ##  ');
+   textcolor(white);
+   writeln('   8');
    writeln('8                                                  :X                          8');
    writeln('8                                                 ,:                           8');
    writeln('8                                 .Y           :EJjv.                          8');
@@ -1822,7 +2053,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -30 DE HP');
 		    life:=life-30;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	 // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1863,6 +2097,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -1907,7 +2153,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -30 DE HP');
 		    life:=life-30;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	 // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -1948,6 +2197,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		     textcolor(white);
@@ -1994,7 +2255,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -30 DE HP');
 		    life:=life-30;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	 // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -2035,6 +2299,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -2086,7 +2362,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -30 DE HP');
 		    life:=life-30;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	 // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -2127,6 +2406,18 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
 		    textcolor(white);
@@ -2171,7 +2462,10 @@ pont:=0;
 				writeln('RESPOSTA ERRADA: -30 DE HP');
 		    life:=life-30;
 		    // Contador de Pontuação
+		    if pont>0 then
+		    begin
 		    pont:= pont-50
+		    end;
 		    end
 		    	 // SENÃO-SE PARA USO DO SUPORTE POKÉMON
 		    	else
@@ -2212,8 +2506,21 @@ pont:=0;
         verif:='V';
         contvida:=1;
       vida:=vida-1;
+           
+    // USO DO SE PARA SUBTRAÇÃO DE PONTUAÇÃO POR PERCA DE VIDA.
+		if pont>=500 then
+		begin
+		  pont:=pont-500
+			end
+			// SENÃO CASO PONTUAÇÃO MENOR QUE 500
+				else
+				begin
+				resto:= pont;
+				pont:= pont-resto;
+			end;
     end;
 		  end;
+ 
 		  
 		  // ATRIBUIÇÃO DE VALORES
 		      verif:='F';
@@ -2252,8 +2559,10 @@ pont:=0;
 		if (reiniciar ='S') or (reiniciar ='s') then
 		JOGO
 		// Senão, encerra o jogo
-			else
-  end
+		else
+			writeln('OBRIGADO POR JOGAR');
+			
+   end
   
 // SENÃO PARA SE USUÁRIO CONSEGUIU FINALIZAR O JOGO 
 
@@ -2276,18 +2585,20 @@ pont:=0;
     writeln('      Você finalizou o Quiz GO!, e como prêmio, eu lhe');
     writeln('      darei meu pokémon mais raro, Mil. ');
     writeln('');
-    writeln(     'Graças a você, a população dos Archens será reconstruída!!');
+    writeln('      Graças a você, a população dos Archens será reconstruída!!');
     writeln('');
-  writeln('      WE ARE THE CHAMPIONS, MY FRIEND.....');
+  writeln('        WE ARE THE CHAMPIONS, MY FRIEND.....');
   writeln('');
-  writeln('      PARABÉNS,');
+  writeln('        PARABÉNS,');
   writeln('');
-  writeln('      VOCÊ ACABA DE CONQUISTAR A LIGA QUIZ GO!!!');
-  writeln('      A JORNADA NÃO FOI FÁCIL, MAS VOCÊ FOI RECOMPENSADO!');
+  writeln('        VOCÊ ACABA DE CONQUISTAR A LIGA QUIZ GO!!!');
+  writeln('        A JORNADA NÃO FOI FÁCIL, MAS VOCÊ FOI RECOMPENSADO!');
   writeln('');
   textcolor(lightgreen);
   writeln('                  SUA PONTUAÇÃO TOTAL FOI: ',pont);
   writeln('');
+  if vida>0 then
+  begin
   // Uso do se caso pontuação seja a máxima
   if pont=1900 then
   begin
@@ -2585,7 +2896,7 @@ writeln('                                           `:##*:`                     
 writeln('');
 writeln('                                               MAXIMIZE A TELA :)');
 readkey;                                                                                                                                                      
-                                                                                                                                                      
+end;                                                                                                                                                      
                                                                                                                                                       
                                                                                                                                                       
                                                                                                                                                       
